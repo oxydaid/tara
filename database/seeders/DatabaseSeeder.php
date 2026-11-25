@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         );
 
         $this->call([
-            GameLevelSeeder::class,
+            BangunDatarShapeSeeder::class,
         ]);
     }
 }

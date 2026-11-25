@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -9,12 +10,16 @@
     --font-sans: 'Jua', cursive, sans-serif;
 }
 
-*, ::before, ::after {
-    font-family: 'Jua', cursive, sans-serif !important;
+html, body {
+    font-family: 'Jua', cursive, sans-serif;
 }
 
-html, body, button, input, select, textarea, p, span, h1, h2, h3, h4, h5, h6 {
-    font-family: 'Jua', cursive, sans-serif !important;
+button, input, select, textarea {
+    font-family: inherit;
+}
+
+*, ::before, ::after {
+    font-family: inherit;
 }
 
 @keyframes menu-wiggle {

@@ -297,8 +297,8 @@ function initAppLoader() {
 
     const allLoaders = Promise.all([uiLoaders, loadAllGlbsSequentially()]);
 
-    // Safety watchdog timer (3 minutes max) in case of unexpected network stall
-    const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 180000));
+    // Safety watchdog timer (45 seconds max) in case of unexpected network stall
+    const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 45000));
 
     Promise.race([allLoaders, timeoutPromise]).then(() => {
         setDisplayProgress(100, 'Memuat selesai! Siap bereksplorasi!');

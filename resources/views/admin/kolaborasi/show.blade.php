@@ -6,19 +6,12 @@
 @section('content')
 @php
     $members = is_array($submission->tasks_data) ? $submission->tasks_data : [];
-    $colors = is_array($submission->coloring_data) ? $submission->coloring_data : [];
-    $identifications = is_array($submission->identification_data) ? $submission->identification_data : [];
     $evaluations = is_array($submission->evaluation_data) ? $submission->evaluation_data : [];
 
-    $canvas1Svg = file_exists(public_path('assets/canvas1a.svg')) ? file_get_contents(public_path('assets/canvas1a.svg')) : '';
-    $canvas2Svg = file_exists(public_path('assets/canvas2a.svg')) ? file_get_contents(public_path('assets/canvas2a.svg')) : '';
-    $canvas3Svg = file_exists(public_path('assets/frame3.svg')) ? file_get_contents(public_path('assets/frame3.svg')) : '';
-    $canvas4Svg = file_exists(public_path('assets/frame4.svg')) ? file_get_contents(public_path('assets/frame4.svg')) : '';
-
-    $adminCanvas1 = str_replace(['id="c1-', 'class="colorable-part"'], ['id="admin-c1-', 'class="admin-canvas-part"'], $canvas1Svg);
-    $adminCanvas2 = str_replace(['id="c2-', 'class="colorable-part"'], ['id="admin-c2-', 'class="admin-canvas-part"'], $canvas2Svg);
-    $adminCanvas3 = str_replace(['id="c3-', 'class="colorable-part"'], ['id="admin-c3-', 'class="admin-canvas-part"'], $canvas3Svg);
-    $adminCanvas4 = str_replace(['id="c4-', 'class="colorable-part"'], ['id="admin-c4-', 'class="admin-canvas-part"'], $canvas4Svg);
+    $adminCanvas1 = $canvases[1] ?? '';
+    $adminCanvas2 = $canvases[2] ?? '';
+    $adminCanvas3 = $canvases[3] ?? '';
+    $adminCanvas4 = $canvases[4] ?? '';
 @endphp
 
 <style>
@@ -64,7 +57,11 @@
 
     <!-- Info Kelompok -->
     <div class="bg-white rounded-3xl border-2 border-emerald-300 p-6 shadow-xs">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div>
+                <span class="text-xs text-slate-400 font-bold block">Sesi Kolaborasi:</span>
+                <span class="text-sm font-bold text-purple-700">{{ $submission->session ? $submission->session->displayLabel() : '-' }}</span>
+            </div>
             <div>
                 <span class="text-xs text-slate-400 font-bold block">Nama Kelompok:</span>
                 <span class="text-lg font-black text-slate-800">{{ $submission->group_name }}</span>
@@ -74,8 +71,8 @@
                 <span class="text-base font-bold text-amber-700">{{ $submission->leader_name ?: '-' }}</span>
             </div>
             <div>
-                <span class="text-xs text-slate-400 font-bold block">Tema Motif:</span>
-                <span class="text-base font-bold text-slate-800">{{ $submission->theme ?: 'Motif Budaya' }}</span>
+                <span class="text-xs text-slate-400 font-bold block">Ruang:</span>
+                <span class="text-base font-bold text-slate-800">Ruang {{ $submission->room_number }}</span>
             </div>
             <div>
                 <span class="text-xs text-slate-400 font-bold block">Jumlah Anggota:</span>
@@ -179,7 +176,7 @@
         </div>
     </div>
 
-    <!-- Tabel 2: Identifikasi Bangun Datar -->
+    <!-- Tabel 2: Identifikasi Bangun Datar (Tampilan Visual Bentuk seperti Misi 2) -->
     <div class="bg-white rounded-3xl border-2 border-slate-200 p-5 sm:p-6 shadow-xs">
         <h3 class="font-bold text-base text-slate-800 mb-3 flex items-center gap-2">
             <svg class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -188,24 +185,44 @@
             <span>Tabel 2: Hasil Identifikasi Bangun Datar & Ciri-cirinya</span>
         </h3>
 
-        @if (!empty($identifications))
+        @if (!empty($identificationItems))
             <div class="overflow-x-auto rounded-2xl border border-slate-200">
                 <table class="w-full text-left text-xs">
                     <thead>
                         <tr class="bg-slate-50 text-slate-700">
                             <th class="p-3 font-bold border-b border-slate-200 w-12 text-center">No</th>
-                            <th class="p-3 font-bold border-b border-slate-200 w-1/4">Nama Bagian Benda</th>
+                            <th class="p-3 font-bold border-b border-slate-200 w-28 text-center">Bentuk</th>
                             <th class="p-3 font-bold border-b border-slate-200 w-1/4">Bangun Datar Teridentifikasi</th>
                             <th class="p-3 font-bold border-b border-slate-200">Ciri-Ciri Bangun Datar</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
-                        @foreach ($identifications as $idx => $idItem)
+                        @foreach ($identificationItems as $idx => $idItem)
                             <tr>
-                                <td class="p-3 text-center font-bold text-slate-500">{{ $idx + 1 }}</td>
-                                <td class="p-3 font-bold text-slate-800">{{ $idItem['benda_name'] ?? ($idItem['benda'] ?? '-') }}</td>
-                                <td class="p-3 font-bold text-purple-700">{{ $idItem['bangun_datar'] ?? '-' }}</td>
-                                <td class="p-3 text-slate-700">{{ $idItem['ciri_ciri'] ?? '-' }}</td>
+                                <td class="p-3 text-center font-bold text-slate-500 align-middle">{{ $idx + 1 }}</td>
+                                <td class="p-3 align-middle text-center">
+                                    @if (!empty($idItem['benda_svg']))
+                                        <div class="w-14 h-12 rounded-xl bg-[#FFFDF5] border-2 border-[#E9C37A] flex items-center justify-center p-1 shadow-2xs mx-auto"
+                                             title="{{ $idItem['benda_label'] }}">
+                                            {!! $idItem['benda_svg'] !!}
+                                        </div>
+                                    @else
+                                        <span class="font-bold text-slate-800">{{ $idItem['benda_label'] ?: '-' }}</span>
+                                    @endif
+                                </td>
+                                <td class="p-3 font-bold text-purple-700 align-middle">
+                                    <div class="inline-flex items-center gap-2">
+                                        @if (!empty($idItem['shape_custom_image']))
+                                            <img src="{{ $idItem['shape_custom_image'] }}" alt="{{ $idItem['shape_label'] }}" class="w-6 h-6 object-contain shrink-0">
+                                        @elseif (!empty($idItem['shape_svg']))
+                                            <span class="w-6 h-6 inline-flex items-center justify-center shrink-0" style="color: {{ $idItem['shape_color'] }}">
+                                                {!! $idItem['shape_svg'] !!}
+                                            </span>
+                                        @endif
+                                        <span>{{ $idItem['shape_label'] }}</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-slate-700 align-middle">{{ $idItem['ciri'] !== '' ? $idItem['ciri'] : '-' }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -259,7 +276,7 @@
 </div>
 
 <script>
-    const coloringData = @json($colors);
+    const coloringData = @json($sanitizedColors);
 
     function applyAdminColors() {
         if (!coloringData || typeof coloringData !== 'object') return;

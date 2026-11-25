@@ -21,6 +21,69 @@
             } catch {}
         </script>
 
+        <style>
+            @media screen and (max-width: 1024px) {
+                .dk-slide2-wrapper {
+                    top: 60px !important;
+                    bottom: 62px !important;
+                    left: 20% !important;
+                    right: 10px !important;
+                    transform: none !important;
+                    translate: none !important;
+                    width: auto !important;
+                    max-width: none !important;
+                    padding: 0 !important;
+                    display: flex !important;
+                    align-items: center !important;
+                }
+                .dk-slide2-card {
+                    height: 100% !important;
+                    max-height: 100% !important;
+                    padding: 12px 14px !important;
+                    border-radius: 24px !important;
+                    display: flex !important;
+                    align-items: center !important;
+                }
+                .dk-slide2-grid {
+                    display: grid !important;
+                    grid-template-columns: minmax(0, 4.3fr) minmax(0, 5.7fr) !important;
+                    gap: 12px !important;
+                    align-items: center !important;
+                    width: 100% !important;
+                }
+                .dk-slide2-text {
+                    font-size: 11px !important;
+                    line-height: 1.45 !important;
+                }
+                .dk-slide2-video {
+                    max-height: 195px !important;
+                    width: 100% !important;
+                }
+            }
+
+            @media screen and (min-width: 1025px) {
+                .dk-slide2-wrapper {
+                    top: 96px !important;
+                    bottom: 84px !important;
+                    left: 18% !important;
+                    right: 24px !important;
+                    transform: none !important;
+                    translate: none !important;
+                    width: auto !important;
+                    max-width: 1320px !important;
+                }
+                .dk-slide2-card {
+                    height: auto !important;
+                    max-height: 100% !important;
+                }
+                .dk-slide2-grid {
+                    display: flex !important;
+                    flex-direction: column !important;
+                    gap: 14px !important;
+                }
+            }
+        </style>
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="min-h-[100dvh] h-[100dvh] overflow-hidden font-['Jua'] select-none">
@@ -87,19 +150,20 @@
                      ============================================================ -->
                 <div id="slide-2" class="dkSlide hidden absolute inset-0 z-30 pointer-events-auto transition-opacity duration-300">
                     
-                    <!-- Bubble Chat Panel Wrapper (Enlarged) -->
-                    <div class="absolute top-1/2 -translate-y-1/2 left-[28%] sm:left-[30%] right-[4%] sm:right-[6%] md:left-1/2 md:right-auto md:-translate-x-1/2 z-30 flex items-center justify-center pointer-events-auto w-auto md:w-full md:max-w-4xl lg:max-w-5xl px-2">
-                        <div class="relative w-full max-h-[88vh] overflow-y-auto bg-[#FFFDF5] border-4 border-[#E9C37A] rounded-[30px] sm:rounded-[38px] md:rounded-[46px] p-5 sm:p-7 md:p-8 lg:p-9 shadow-[0_22px_50px_rgba(0,0,0,0.25),0_4px_12px_rgba(233,195,122,0.3)]">
+                    <!-- Bubble Chat Panel Wrapper (Responsive Mobile & Desktop) -->
+                    <div class="dk-slide2-wrapper absolute left-[24%] right-[4%] z-30 flex items-center justify-center pointer-events-auto">
+                        <div class="dk-slide2-card relative w-full overflow-y-auto bg-[#FFFDF5] border-4 border-[#E9C37A] rounded-[28px] sm:rounded-[34px] md:rounded-[42px] p-4 sm:p-6 lg:p-8 shadow-[0_22px_50px_rgba(0,0,0,0.25),0_4px_12px_rgba(233,195,122,0.3)]">
                             <!-- Ekor Balon Chat Mengarah ke Karakter Yuk Damar di Kiri -->
-                            <div class="absolute -left-[24px] sm:-left-[28px] top-1/3 -translate-y-1/2 w-0 h-0 border-t-[14px] sm:border-t-[18px] border-t-transparent border-r-[24px] sm:border-r-[28px] border-r-[#E9C37A] border-b-[14px] sm:border-b-[18px] border-b-transparent"></div>
-                            <div class="absolute -left-[16px] sm:-left-[19px] top-1/3 -translate-y-1/2 w-0 h-0 border-t-[14px] sm:border-t-[18px] border-t-transparent border-r-[24px] sm:border-r-[28px] border-r-[#FFFDF5] border-b-[14px] sm:border-b-[18px] border-b-transparent"></div>
-                            
-                            <p class="text-xs sm:text-sm md:text-base lg:text-lg text-[#3D1804] font-normal leading-relaxed text-left select-none tracking-wide mb-3 sm:mb-4">
-                                “Damar Kurung dipelopori dan dilestarikan oleh maestro <strong class="text-[#E57354]">Sriwati Mas'ud (Mbah Mas'ud)</strong>. Lampion ini memiliki ciri khas bentuk kerucut di bagian atas serta 4 sisi lukisan bercerita tentang tradisi masyarakat Gresik menyambut malam Lailatul Qadar. Yuk tonton video animasinya!”
-                            </p>
+                            <div class="absolute -left-[22px] sm:-left-[26px] top-12 sm:top-16 -translate-y-1/2 w-0 h-0 border-t-[12px] sm:border-t-[16px] border-t-transparent border-r-[22px] sm:border-r-[26px] border-r-[#E9C37A] border-b-[12px] sm:border-b-[16px] border-b-transparent"></div>
+                            <div class="absolute -left-[15px] sm:-left-[18px] top-12 sm:top-16 -translate-y-1/2 w-0 h-0 border-t-[12px] sm:border-t-[16px] border-t-transparent border-r-[22px] sm:border-r-[26px] border-r-[#FFFDF5] border-b-[12px] sm:border-b-[16px] border-b-transparent"></div>
 
-                            <!-- Responsive YouTube Video Frame (Enlarged) -->
-                            <div class="relative w-full aspect-video max-h-[380px] sm:max-h-[430px] md:max-h-[480px] lg:max-h-[520px] rounded-2xl overflow-hidden border-2 border-[#E9C37A] shadow-md bg-black mx-auto">
+                            <div class="dk-slide2-grid">
+                                <p class="dk-slide2-text text-xs sm:text-sm md:text-base lg:text-lg text-[#3D1804] font-normal leading-relaxed text-left select-none tracking-wide">
+                                    “Damar Kurung dipelopori dan dilestarikan oleh maestro <strong class="text-[#E57354]">Sriwati Mas'ud (Mbah Mas'ud)</strong>. Lampion ini memiliki ciri khas bentuk kerucut di bagian atas serta 4 sisi lukisan bercerita tentang tradisi masyarakat Gresik menyambut malam Lailatul Qadar. Yuk tonton video animasinya!”
+                                </p>
+
+                                <!-- Responsive YouTube Video Frame -->
+                                <div class="dk-slide2-video relative w-full lg:max-w-2xl aspect-video lg:max-h-[360px] rounded-xl sm:rounded-2xl overflow-hidden border-2 border-[#E9C37A] shadow-md bg-black mx-auto">
                                 <iframe id="youtubePlayer"
                                         class="w-full h-full"
                                         src="https://www.youtube-nocookie.com/embed/zGuzJby8Xuw?rel=0&modestbranding=1&enablejsapi=1" 
@@ -108,7 +172,8 @@
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                                         referrerpolicy="strict-origin-when-cross-origin"
                                         allowfullscreen>
-                                </iframe>
+                                    </iframe>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -242,53 +307,11 @@ Lukisan pada lampion ini menggambarkan suasana shalat tarawih berjamaah di surau
                     </div>
                 </div>
 
-                <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}" class="hidden">
-                    @csrf
-                </form>
-
                 <!-- SOUND SETTINGS (MODAL ONLY) -->
                 <x-sound-settings :renderTrigger="false" />
 
                 <!-- EXIT CONFIRMATION MODAL -->
-                <div id="exitModal" 
-                     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 font-['Jua'] select-none">
-                    
-                    <div class="absolute inset-0" onclick="closeExitModal()"></div>
-
-                    <div id="exitBox" 
-                         class="relative z-10 w-full max-w-[420px] transform scale-90 transition-all duration-300 rounded-3xl border-4 border-[#3D1804] px-6 py-6 shadow-[0_20px_40px_rgba(0,0,0,0.5),0_8px_0_#280E02]"
-                         style="background: linear-gradient(180deg, #9E531F 0%, #7E3E11 25%, #6E330C 65%, #522204 100%);">
-                        
-                        <div class="text-center mb-3.5 pt-1">
-                            <h2 class="text-2xl sm:text-3xl font-bold text-[#FFF2A6]" style="text-shadow: 2px 2px 0 #3D1804, -2px -2px 0 #3D1804, 2px -2px 0 #3D1804, -2px 2px 0 #3D1804;">
-                                Konfirmasi Keluar
-                            </h2>
-                            <p class="text-xs text-[#FFE8A3] font-medium mt-1">
-                                Apakah kamu yakin ingin keluar dari petualangan TARA?
-                            </p>
-                        </div>
-
-                        <div class="rounded-2xl border-3 border-[#612A07] bg-gradient-to-b from-[#FFFDF0] to-[#FCEEC7] p-4 sm:p-5 shadow text-center space-y-4">
-                            <p class="text-xs sm:text-sm text-[#785135] font-semibold leading-relaxed">
-                                Catatan belajarmu telah tersimpan. Kamu dapat kembali melanjutkan belajar kapan saja!
-                            </p>
-
-                            <div class="flex flex-col sm:flex-row items-center gap-2.5 pt-1">
-                                <button type="button" 
-                                        onclick="closeExitModal()" 
-                                        class="w-full flex-1 rounded-full border-3 border-white/90 bg-gradient-to-b from-[#4ADE80] via-[#22C55E] to-[#15803D] py-2.5 text-white font-bold text-sm sm:text-base tracking-wide shadow-[0_5px_0_#0F5128] hover:brightness-110 active:translate-y-[2px] cursor-pointer">
-                                    Lanjut Belajar
-                                </button>
-                                <button type="button" 
-                                        onclick="confirmExitAction()" 
-                                        class="w-full sm:w-auto px-6 rounded-full border-3 border-white/90 bg-gradient-to-b from-[#EF4444] via-[#DC2626] to-[#B91C1C] py-2.5 text-white font-bold text-sm sm:text-base tracking-wide shadow-[0_5px_0_#7F1D1D] hover:brightness-110 active:translate-y-[2px] cursor-pointer">
-                                    Ya, Keluar
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                <x-exit-modal />
 
             </div>
         </div>
@@ -443,28 +466,8 @@ Lukisan pada lampion ini menggambarkan suasana shalat tarawih berjamaah di surau
                 initDamarKurungPage();
             }
 
-            function handleExitWeb() {
-                var m = document.getElementById('exitModal');
-                var b = document.getElementById('exitBox');
-                if (m) { m.classList.remove('opacity-0', 'pointer-events-none'); m.classList.add('opacity-100'); }
-                if (b) { b.classList.remove('scale-90'); b.classList.add('scale-100'); }
-            }
-            function closeExitModal() {
-                var m = document.getElementById('exitModal');
-                var b = document.getElementById('exitBox');
-                if (m) { m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none'); }
-                if (b) { b.classList.remove('scale-100'); b.classList.add('scale-90'); }
-            }
-            function confirmExitAction() {
-                var f = document.getElementById('globalLogoutForm');
-                if (f) f.submit();
-            }
-
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeExitModal();
-                    if (typeof closeSettingsModal === 'function') closeSettingsModal();
-                } else if (e.key === 'ArrowRight') {
+                if (e.key === 'ArrowRight') {
                     if (currentSlide === 3) {
                         changeMotif(1);
                     } else if (currentSlide < 3) {

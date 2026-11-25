@@ -2,48 +2,58 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\BangunDatarShape;
+use App\Models\CollaborationRoom;
+use App\Models\CollaborationSession;
 use App\Models\CollaborationSubmission;
-use App\Models\SpendingItem;
-use App\Models\StudentSubmission;
 use App\Models\User;
 
 class AdminDashboardController extends AdminController
 {
     public function index()
     {
+        $activeSession = CollaborationSession::getActive();
+
         $totalStudents = User::where('is_admin', 0)->count();
-        $totalSpendingItems = SpendingItem::count();
+        $totalSessions = CollaborationSession::count();
+        $totalActiveSessionSubmissions = CollaborationSubmission::where('collaboration_session_id', $activeSession->id)->count();
         $totalCollaboration = CollaborationSubmission::count();
+        $totalActiveShapes = BangunDatarShape::where('is_active', true)->count();
 
-        // 1 consolidated query for all step counts instead of 4 separate table scans
-        $submissionCounts = StudentSubmission::selectRaw('step_key, count(*) as count')
-            ->groupBy('step_key')
-            ->pluck('count', 'step_key');
-
-        $totalSubmissions = $submissionCounts->sum();
-        $totalIdeBisnis = $submissionCounts->get('ide_bisnis', 0);
-        $totalRencanaKeuangan = $submissionCounts->get('hitung_modal', 0);
-        $totalPengembanganBisnis = $submissionCounts->get('studi_kasus_investasi', 0);
-
-        $recentSubmissions = StudentSubmission::with('user:id,name,avatar,no_absen')
-            ->latest()
+        $activeRooms = CollaborationRoom::with([
+            'members' => function ($query) {
+                $query->orderBy('id', 'asc');
+            },
+        ])
+            ->where('collaboration_session_id', $activeSession->id)
+            ->orderBy('room_number')
             ->take(8)
             ->get();
 
+        $recentSubmissions = CollaborationSubmission::with('session:id,name,class_label,schedule_label')
+            ->select([
+                'id', 'collaboration_session_id', 'room_number', 'group_name',
+                'leader_name', 'tasks_data', 'submitted_at', 'created_at',
+            ])
+            ->latest('submitted_at')
+            ->latest('id')
+            ->take(6)
+            ->get();
+
         $recentStudents = User::where('is_admin', 0)
-            ->select('id', 'name', 'avatar', 'no_absen', 'created_at')
+            ->select('id', 'name', 'no_absen', 'created_at')
             ->latest()
             ->take(6)
             ->get();
 
         return view('admin.dashboard', [
+            'activeSession' => $activeSession,
             'totalStudents' => $totalStudents,
-            'totalSubmissions' => $totalSubmissions,
+            'totalSessions' => $totalSessions,
+            'totalActiveSessionSubmissions' => $totalActiveSessionSubmissions,
             'totalCollaboration' => $totalCollaboration,
-            'totalIdeBisnis' => $totalIdeBisnis,
-            'totalRencanaKeuangan' => $totalRencanaKeuangan,
-            'totalPengembanganBisnis' => $totalPengembanganBisnis,
-            'totalSpendingItems' => $totalSpendingItems,
+            'totalActiveShapes' => $totalActiveShapes,
+            'activeRooms' => $activeRooms,
             'recentSubmissions' => $recentSubmissions,
             'recentStudents' => $recentStudents,
         ]);

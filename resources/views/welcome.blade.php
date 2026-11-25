@@ -5,7 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
         <title>TARA - Media Pembelajaran Etnomatematika Bangun Datar</title>
+        <meta name="description" content="TARA - Media Pembelajaran Interaktif Etnomatematika Bangun Datar Damar Kurung Bojonegoro">
+        <meta name="robots" content="noindex, nofollow">
+        <meta property="og:title" content="TARA - Media Pembelajaran Etnomatematika">
+        <meta property="og:description" content="Media pembelajaran interaktif berbasis Damar Kurung untuk siswa SD/SMP.">
+        <meta property="og:type" content="website">
         <link rel="icon" type="image/webp" href="{{ asset('assets/logotara.webp') }}">
+        <link rel="apple-touch-icon" href="{{ asset('assets/logotara.webp') }}">
 
         <!-- Preload Essential Preloader Assets -->
         <link rel="preload" as="image" href="{{ asset('assets/loadingscreen.webp') }}" type="image/webp">
@@ -43,12 +49,7 @@
                 "{{ asset('assets/left_button.webp') }}",
                 "{{ asset('assets/right_button.webp') }}"
             ];
-            window.__TARA_GLB_ASSETS = [
-                "{{ asset('assets/damar-kurung-religii.glb') }}",
-                "{{ asset('assets/damar-kurung-sosial.glb') }}",
-                "{{ asset('assets/damar-kurung-kesenian.glb') }}",
-                "{{ asset('assets/damar-kurung-adat.glb') }}"
-            ];
+            window.__TARA_GLB_ASSETS = []; // GLB dimuat lazy saat halaman Damar Kurung dibuka
             window.__TARA_PREFETCH_ROUTES = [];
         </script>
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class PageController extends Controller
 {
@@ -19,7 +19,11 @@ class PageController extends Controller
     {
         abort_unless(array_key_exists($slug, self::ALLOWED_PAGES), 404);
 
-        $content = DB::table('page_contents')->where('slug', $slug)->first();
+        $content = Cache::remember(
+            "page_content_{$slug}",
+            3600,
+            fn () => DB::table('page_contents')->where('slug', $slug)->first()
+        );
         $instruments = null;
         $oklikSettings = null;
 
@@ -33,6 +37,7 @@ class PageController extends Controller
             }
 
             $normalized = ltrim($path, '/');
+
             return asset($normalized);
         };
 
@@ -67,11 +72,11 @@ class PageController extends Controller
 
             $resolveAudio = function (string $name, string $modelPath): ?string {
                 $base = pathinfo($modelPath, PATHINFO_FILENAME);
-                $lower = strtolower($name . ' ' . $base);
+                $lower = strtolower($name.' '.$base);
 
                 $candidates = [
                     "assets/{$base}.m4a",
-                    'assets/' . strtolower($base) . '.m4a',
+                    'assets/'.strtolower($base).'.m4a',
                 ];
 
                 if (str_contains($lower, 'kerep')) {
@@ -98,7 +103,7 @@ class PageController extends Controller
                 [
                     'position' => 1,
                     'name' => 'Klur',
-                    'description' => "Klur merupakan bagian dari gedhug, jika tidak ada klur tidak ada gedhug.",
+                    'description' => 'Klur merupakan bagian dari gedhug, jika tidak ada klur tidak ada gedhug.',
                     'model_path' => 'assets/klur.glb',
                 ],
                 [
@@ -135,7 +140,9 @@ class PageController extends Controller
                     }
 
                     $audioPath = is_string($row->audio_path ?? null) ? trim((string) $row->audio_path) : '';
-                    $audioUrl = $audioPath !== '' ? $assetVersioned($audioPath) : $resolveAudio($row->name, $normalizedModelPath);
+                    $audioUrl = $audioPath !== ''
+                        ? $assetVersioned($audioPath)
+                        : Cache::remember("audio_resolve_{$row->id}", 86400, fn () => $resolveAudio($row->name, $normalizedModelPath));
 
                     return [
                         'name' => $row->name,
@@ -149,7 +156,7 @@ class PageController extends Controller
                     'name' => $row['name'],
                     'description' => $row['description'],
                     'src' => $assetVersioned($row['model_path']),
-                    'audio' => $resolveAudio($row['name'], $row['model_path']),
+                    'audio' => Cache::remember("audio_resolve_seed_{$row['position']}", 86400, fn () => $resolveAudio($row['name'], $row['model_path'])),
                 ])->values();
             }
         }
@@ -163,4 +170,3 @@ class PageController extends Controller
         ]);
     }
 }
-

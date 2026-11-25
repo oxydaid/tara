@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentLoginRequest;
+use App\Models\CollaborationMember;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
@@ -18,15 +21,9 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request)
+    public function login(StudentLoginRequest $request)
     {
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:100'],
-            'no_absen' => ['required', 'string', 'max:20'],
-        ], [
-            'name.required' => 'Nama lengkap wajib diisi.',
-            'no_absen.required' => 'Nomor absen wajib diisi.',
-        ]);
+        $data = $request->validated();
 
         $name = trim($data['name']);
         $noAbsen = trim($data['no_absen']);
@@ -40,7 +37,7 @@ class AuthController extends Controller
             } else {
                 return back()
                     ->withInput()
-                    ->withErrors(['no_absen' => 'Nomor absen ' . $noAbsen . ' sudah terdaftar untuk siswa ' . $userByAbsen->name . '. Silakan periksa kembali nama & nomor absenmu!']);
+                    ->withErrors(['no_absen' => 'Nomor absen '.$noAbsen.' sudah terdaftar untuk siswa '.$userByAbsen->name.'. Silakan periksa kembali nama & nomor absenmu!']);
             }
         } else {
             // Check if user with this name exists and has no absen yet
@@ -54,7 +51,7 @@ class AuthController extends Controller
                 $email = "absen_{$noAbsen}_{$cleanName}@tara.local";
 
                 if (User::where('email', $email)->exists()) {
-                    $email = "absen_{$noAbsen}_{$cleanName}_" . time() . "@tara.local";
+                    $email = "absen_{$noAbsen}_{$cleanName}_".Str::uuid().'@tara.local';
                 }
 
                 $user = User::create([
@@ -104,7 +101,7 @@ class AuthController extends Controller
     {
         // When student logs out, also remove them from active collaboration room
         if (Auth::check()) {
-            \App\Models\CollaborationMember::where('user_id', Auth::id())->delete();
+            CollaborationMember::where('user_id', Auth::id())->delete();
         }
 
         Auth::logout();

@@ -101,7 +101,7 @@
                     
                     <!-- Bubble Chat & Analysis Panel Wrapper (Safe area: top clears Home/Settings, bottom clears Back/Next) -->
                     <div class="bangun-datar-wrapper absolute top-[52px] sm:top-[56px] md:top-[60px] bottom-16 sm:bottom-20 left-[24%] sm:left-[26%] md:left-1/2 md:-translate-x-1/2 right-3 sm:right-4 md:right-auto z-30 flex items-center justify-center pointer-events-auto w-auto md:w-full md:max-w-4xl lg:max-w-5xl xl:max-w-6xl px-1 sm:px-2">
-                        <div class="bangun-datar-card relative w-full h-full max-h-full overflow-y-auto bg-[#FFFDF5] border-3 sm:border-4 border-[#E9C37A] rounded-[24px] sm:rounded-[34px] md:rounded-[42px] p-3.5 sm:p-5 md:p-6 shadow-[0_22px_50px_rgba(0,0,0,0.25),0_4px_12px_rgba(233,195,122,0.3)] flex flex-col">
+                        <div class="bangun-datar-card relative w-full h-auto max-h-full overflow-y-auto bg-[#FFFDF5] border-3 sm:border-4 border-[#E9C37A] rounded-[24px] sm:rounded-[34px] md:rounded-[42px] p-3.5 sm:p-5 md:p-6 shadow-[0_22px_50px_rgba(0,0,0,0.25),0_4px_12px_rgba(233,195,122,0.3)] flex flex-col">
                             
                             <!-- Ekor Balon Chat Mengarah ke Karakter Yuk Damar di Kiri -->
                             <div class="absolute -left-[20px] sm:-left-[24px] top-12 sm:top-14 -translate-y-1/2 w-0 h-0 border-t-[12px] sm:border-t-[14px] border-t-transparent border-r-[20px] sm:border-r-[24px] border-r-[#E9C37A] border-b-[12px] sm:border-b-[14px] border-b-transparent"></div>
@@ -120,11 +120,11 @@
                                 </p>
                             </div>
 
-                            <!-- Grid 2 Kolom: Sisi Kiri Motif Tema Adat, Sisi Kanan Langsung Tabel Analisis -->
-                            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-start">
+                            <!-- Grid 2 Kolom: Sisi Kiri Motif Tema Adat, Sisi Kanan Tabel Analisis -->
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-start min-w-0 w-full">
                                 
                                 <!-- Sisi Kiri: Model 3D GLB Tema Adat Istiadat Interaktif -->
-                                <div class="md:col-span-5 bg-gradient-to-b from-[#FFF8E7] to-[#FFF3D6] rounded-2xl md:rounded-3xl p-3 sm:p-3.5 border-2 border-[#E9C37A]/80 shadow-xs flex flex-col justify-between">
+                                <div class="lg:col-span-5 min-w-0 w-full bg-gradient-to-b from-[#FFF8E7] to-[#FFF3D6] rounded-2xl md:rounded-3xl p-3 sm:p-3.5 border-2 border-[#E9C37A]/80 shadow-xs flex flex-col justify-between">
                                     <div class="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-[#E9C37A]/50">
                                         <div class="flex items-center gap-1.5">
                                             <svg class="w-4 h-4 text-[#8A4416]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -170,228 +170,100 @@
                                     </div>
                                 </div>
 
-                                <!-- Sisi Kanan: Tabel Analisis Langsung -->
-                                <div class="md:col-span-7 flex flex-col justify-start">
-                                    <div class="overflow-x-auto rounded-2xl border-2 border-[#E9C37A] shadow-md bg-white">
-                                        <table class="w-full text-left border-collapse min-w-[380px]">
+                                <!-- Sisi Kanan: Tabel Analisis Langsung (2 Bangun Datar per Halaman) -->
+                                @php
+                                    $shapeList = $shapes ?? collect();
+                                    $totalShapePages = max(1, (int) ceil($shapeList->count() / 2));
+                                @endphp
+                                <div class="lg:col-span-7 min-w-0 w-full flex flex-col justify-start">
+                                    <div class="w-full overflow-x-auto rounded-2xl border-2 border-[#E9C37A] shadow-md bg-white">
+                                        <table class="w-full text-left border-collapse table-fixed sm:table-auto">
                                             <thead class="sticky top-0 z-10">
-                                                <tr class="bg-gradient-to-r from-[#2B5F8C] via-[#3B7BB3] to-[#2B5F8C] text-white text-xs sm:text-sm uppercase tracking-wider shadow-sm">
-                                                    <th class="py-2.5 px-2.5 sm:px-3 text-center w-[30%] font-bold border-r border-[#6393BD]">BENDA</th>
-                                                    <th class="py-2.5 px-2.5 sm:px-3 text-center w-[30%] font-bold border-r border-[#6393BD]">BANGUN DATAR</th>
-                                                    <th class="py-2.5 px-2.5 sm:px-3 text-left w-[40%] font-bold">CIRI-CIRI</th>
+                                                <tr class="bg-gradient-to-r from-[#2B5F8C] via-[#3B7BB3] to-[#2B5F8C] text-white text-[11px] sm:text-xs md:text-sm uppercase tracking-wider shadow-sm">
+                                                    <th class="py-2.5 px-2 sm:px-3 text-center w-[28%] font-bold border-r border-[#6393BD]">GAMBAR</th>
+                                                    <th class="py-2.5 px-2 sm:px-3 text-center w-[26%] font-bold border-r border-[#6393BD]">BANGUN DATAR</th>
+                                                    <th class="py-2.5 px-2 sm:px-3 text-left w-[46%] font-bold">CIRI-CIRI</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-[#E9C37A]/50 text-xs sm:text-sm text-[#3D1804]">
-                                                
-                                                <!-- Row 1: Segitiga (Atap Menara) -->
-                                                <tr class="hover:bg-[#FFF8E7] transition-colors bg-[#FFFDF7]">
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center border-r border-[#E9C37A]/40">
-                                                        <div class="flex flex-col items-center justify-center gap-0.5">
-                                                            <div class="w-9 h-8 rounded-lg bg-[#FFE7D6] border border-[#E57354]/40 flex items-center justify-center p-0.5 overflow-hidden">
-                                                                <svg viewBox="0 0 40 32" class="w-full h-full">
-                                                                    <polygon points="20,2 2,30 38,30" fill="#E57354" stroke="#A83216" stroke-width="2"/>
-                                                                </svg>
+                                                @forelse ($shapeList as $shape)
+                                                    @php
+                                                        $pageIdx = intdiv($loop->index, 2);
+                                                    @endphp
+                                                    <tr class="shape-paginated-row hover:bg-[#FFF8E7] transition-colors {{ $loop->even ? 'bg-[#FFFFFF]' : 'bg-[#FFFDF7]' }} {{ $pageIdx > 0 ? 'hidden' : '' }}"
+                                                        data-shape-page="{{ $pageIdx }}">
+                                                        <td class="py-3 px-2 sm:px-3 text-center border-r border-[#E9C37A]/40 align-middle">
+                                                            <div class="flex flex-col items-center justify-center gap-1.5">
+                                                                <div class="w-20 h-16 sm:w-24 sm:h-20 md:w-28 md:h-24 mx-auto flex items-center justify-center"
+                                                                     style="color: {{ $shape->color }};">
+                                                                    @if ($shape->custom_image_path)
+                                                                        <img src="{{ asset($shape->custom_image_path) }}"
+                                                                             alt="{{ $shape->name }}"
+                                                                             class="max-w-full max-h-full object-contain">
+                                                                    @else
+                                                                        {!! $shape->svg_inline !!}
+                                                                    @endif
+                                                                </div>
+                                                                @if (filled($shape->bagian_damar_kurung))
+                                                                    <span class="font-bold text-[11px] sm:text-xs text-[#8A4416] leading-tight break-words">
+                                                                        {{ $shape->bagian_damar_kurung }}
+                                                                    </span>
+                                                                @endif
                                                             </div>
-                                                            <span class="font-bold text-[11px] sm:text-xs text-[#8A4416]">Atap Menara</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center font-bold text-[#E57354] border-r border-[#E9C37A]/40">
-                                                        <span class="inline-block bg-[#FFEBE6] px-2.5 py-0.5 rounded-full border border-[#E57354]/40 text-xs">
-                                                            Segitiga
-                                                        </span>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-[#5C2B09] leading-tight">
-                                                        <ul class="list-disc list-inside space-y-0.5 text-[10px] sm:text-[11px]">
-                                                            <li>Memiliki <strong>3 sisi</strong></li>
-                                                            <li>Memiliki <strong>3 titik sudut</strong></li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-
-                                                <!-- Row 2: Belah Ketupat (Ketupat) -->
-                                                <tr class="hover:bg-[#FFF8E7] transition-colors bg-[#FFFFFF]">
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center border-r border-[#E9C37A]/40">
-                                                        <div class="flex flex-col items-center justify-center gap-0.5">
-                                                            <div class="w-9 h-8 rounded-lg bg-[#EDE9FE] border border-[#8B5CF6]/40 flex items-center justify-center p-0.5 overflow-hidden">
-                                                                <svg viewBox="0 0 32 32" class="w-5 h-5">
-                                                                    <polygon points="16,2 30,16 16,30 2,16" fill="#8B5CF6" stroke="#6D28D9" stroke-width="2"/>
-                                                                </svg>
-                                                            </div>
-                                                            <span class="font-bold text-[11px] sm:text-xs text-[#8A4416]">Ketupat</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center font-bold text-[#7C3AED] border-r border-[#E9C37A]/40">
-                                                        <span class="inline-block bg-[#EDE9FE] px-2.5 py-0.5 rounded-full border border-[#8B5CF6]/40 text-xs">
-                                                            Belah Ketupat
-                                                        </span>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-[#5C2B09] leading-tight">
-                                                        <ul class="list-disc list-inside space-y-0.5 text-[10px] sm:text-[11px]">
-                                                            <li>Memiliki <strong>4 sisi sama panjang</strong></li>
-                                                            <li>Diagonal berpotongan <strong>tegak lurus</strong></li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-
-                                                <!-- Row 3: Jajar Genjang (Atap dari Penjual) -->
-                                                <tr class="hover:bg-[#FFF8E7] transition-colors bg-[#FFFDF7]">
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center border-r border-[#E9C37A]/40">
-                                                        <div class="flex flex-col items-center justify-center gap-0.5">
-                                                            <div class="w-9 h-8 rounded-lg bg-[#FEF3C7] border border-[#D97706]/40 flex items-center justify-center p-0.5 overflow-hidden">
-                                                                <svg viewBox="0 0 36 24" class="w-6 h-4">
-                                                                    <polygon points="10,3 34,3 26,21 2,21" fill="#D97706" stroke="#92400E" stroke-width="2"/>
-                                                                </svg>
-                                                            </div>
-                                                            <span class="font-bold text-[11px] sm:text-xs text-[#8A4416]">Atap Penjual</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center font-bold text-[#B45309] border-r border-[#E9C37A]/40">
-                                                        <span class="inline-block bg-[#FEF3C7] px-2.5 py-0.5 rounded-full border border-[#D97706]/40 text-xs">
-                                                            Jajar Genjang
-                                                        </span>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-[#5C2B09] leading-tight">
-                                                        <ul class="list-disc list-inside space-y-0.5 text-[10px] sm:text-[11px]">
-                                                            <li>Memiliki <strong>2 pasang sisi sejajar & sama panjang</strong></li>
-                                                            <li>Sudut berhadapan <strong>sama besar</strong></li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-
-                                                <!-- Row 4: Lingkaran (Buah) -->
-                                                <tr class="hover:bg-[#FFF8E7] transition-colors bg-[#FFFFFF]">
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center border-r border-[#E9C37A]/40">
-                                                        <div class="flex flex-col items-center justify-center gap-0.5">
-                                                            <div class="w-9 h-8 rounded-lg bg-[#E0F2FE] border border-[#0284C7]/40 flex items-center justify-center p-0.5 overflow-hidden">
-                                                                <svg viewBox="0 0 30 30" class="w-5 h-5">
-                                                                    <circle cx="15" cy="15" r="12" fill="#0284C7" stroke="#0369A1" stroke-width="2"/>
-                                                                </svg>
-                                                            </div>
-                                                            <span class="font-bold text-[11px] sm:text-xs text-[#8A4416]">Buah</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center font-bold text-[#0284C7] border-r border-[#E9C37A]/40">
-                                                        <span class="inline-block bg-[#E0F2FE] px-2.5 py-0.5 rounded-full border border-[#0284C7]/40 text-xs">
-                                                            Lingkaran
-                                                        </span>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-[#5C2B09] leading-tight">
-                                                        <ul class="list-disc list-inside space-y-0.5 text-[10px] sm:text-[11px]">
-                                                            <li>Memiliki <strong>1 sisi lengkung</strong></li>
-                                                            <li>Tidak memiliki titik sudut (<strong>0 sudut</strong>)</li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-
-                                                <!-- Row 5: Persegi (Pintu / Kotak) -->
-                                                <tr class="hover:bg-[#FFF8E7] transition-colors bg-[#FFFDF7]">
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center border-r border-[#E9C37A]/40">
-                                                        <div class="flex flex-col items-center justify-center gap-0.5">
-                                                            <div class="w-9 h-8 rounded-lg bg-[#FEF3C7] border border-[#F59E0B]/40 flex items-center justify-center p-0.5 overflow-hidden">
-                                                                <svg viewBox="0 0 32 32" class="w-5 h-5">
-                                                                    <rect x="2" y="2" width="28" height="28" rx="2" fill="#F59E0B" stroke="#B45309" stroke-width="2"/>
-                                                                </svg>
-                                                            </div>
-                                                            <span class="font-bold text-[11px] sm:text-xs text-[#8A4416]">Kotak Dagangan</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center font-bold text-[#D97706] border-r border-[#E9C37A]/40">
-                                                        <span class="inline-block bg-[#FEF3C7] px-2.5 py-0.5 rounded-full border border-[#F59E0B]/40 text-xs">
-                                                            Persegi
-                                                        </span>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-[#5C2B09] leading-tight">
-                                                        <ul class="list-disc list-inside space-y-0.5 text-[10px] sm:text-[11px]">
-                                                            <li>Memiliki <strong>4 sisi sama panjang</strong></li>
-                                                            <li>Memiliki <strong>4 sudut siku-siku (90°)</strong></li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-
-                                                <!-- Row 6: Persegi Panjang (Meja Stand) -->
-                                                <tr class="hover:bg-[#FFF8E7] transition-colors bg-[#FFFFFF]">
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center border-r border-[#E9C37A]/40">
-                                                        <div class="flex flex-col items-center justify-center gap-0.5">
-                                                            <div class="w-9 h-8 rounded-lg bg-[#D1FAE5] border border-[#10B981]/40 flex items-center justify-center p-0.5 overflow-hidden">
-                                                                <svg viewBox="0 0 38 24" class="w-6 h-4">
-                                                                    <rect x="2" y="2" width="34" height="20" rx="2" fill="#10B981" stroke="#047857" stroke-width="2"/>
-                                                                </svg>
-                                                            </div>
-                                                            <span class="font-bold text-[11px] sm:text-xs text-[#8A4416]">Meja Jualan</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center font-bold text-[#059669] border-r border-[#E9C37A]/40">
-                                                        <span class="inline-block bg-[#D1FAE5] px-2.5 py-0.5 rounded-full border border-[#10B981]/40 text-xs">
-                                                            Persegi Panjang
-                                                        </span>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-[#5C2B09] leading-tight">
-                                                        <ul class="list-disc list-inside space-y-0.5 text-[10px] sm:text-[11px]">
-                                                            <li>Memiliki <strong>2 pasang sisi sejajar & sama panjang</strong></li>
-                                                            <li>Memiliki <strong>4 sudut siku-siku (90°)</strong></li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-
-                                                <!-- Row 7: Trapesium (Perahu / Kios) -->
-                                                <tr class="hover:bg-[#FFF8E7] transition-colors bg-[#FFFDF7]">
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center border-r border-[#E9C37A]/40">
-                                                        <div class="flex flex-col items-center justify-center gap-0.5">
-                                                            <div class="w-9 h-8 rounded-lg bg-[#FCE7F3] border border-[#EC4899]/40 flex items-center justify-center p-0.5 overflow-hidden">
-                                                                <svg viewBox="0 0 36 24" class="w-6 h-4">
-                                                                    <polygon points="8,3 28,3 34,21 2,21" fill="#EC4899" stroke="#BE185D" stroke-width="2"/>
-                                                                </svg>
-                                                            </div>
-                                                            <span class="font-bold text-[11px] sm:text-xs text-[#8A4416]">Perahu / Bak</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center font-bold text-[#DB2777] border-r border-[#E9C37A]/40">
-                                                        <span class="inline-block bg-[#FCE7F3] px-2.5 py-0.5 rounded-full border border-[#EC4899]/40 text-xs">
-                                                            Trapesium
-                                                        </span>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-[#5C2B09] leading-tight">
-                                                        <ul class="list-disc list-inside space-y-0.5 text-[10px] sm:text-[11px]">
-                                                            <li>Memiliki <strong>sepasang sisi sejajar</strong></li>
-                                                            <li>Memiliki <strong>4 titik sudut</strong></li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-
-                                                <!-- Row 8: Layang-layang (Hiasan Tradisi) -->
-                                                <tr class="hover:bg-[#FFF8E7] transition-colors bg-[#FFFFFF]">
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center border-r border-[#E9C37A]/40">
-                                                        <div class="flex flex-col items-center justify-center gap-0.5">
-                                                            <div class="w-9 h-8 rounded-lg bg-[#F1F5F9] border border-[#64748B]/40 flex items-center justify-center p-0.5 overflow-hidden">
-                                                                <svg viewBox="0 0 32 32" class="w-5 h-5">
-                                                                    <polygon points="16,2 30,12 16,30 2,12" fill="#64748B" stroke="#334155" stroke-width="2"/>
-                                                                </svg>
-                                                            </div>
-                                                            <span class="font-bold text-[11px] sm:text-xs text-[#8A4416]">Hiasan Gantung</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-center font-bold text-[#475569] border-r border-[#E9C37A]/40">
-                                                        <span class="inline-block bg-[#F1F5F9] px-2.5 py-0.5 rounded-full border border-[#64748B]/40 text-xs">
-                                                            Layang-Layang
-                                                        </span>
-                                                    </td>
-                                                    <td class="py-2 px-2.5 sm:px-3 text-[#5C2B09] leading-tight">
-                                                        <ul class="list-disc list-inside space-y-0.5 text-[10px] sm:text-[11px]">
-                                                            <li>Memiliki <strong>2 pasang sisi berdekatan sama panjang</strong></li>
-                                                            <li>Memiliki <strong>1 pasang sudut berhadapan sama besar</strong></li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-
+                                                        </td>
+                                                        <td class="py-3 px-2 sm:px-3 text-center font-bold border-r border-[#E9C37A]/40 align-middle">
+                                                            <span class="inline-block px-2 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold leading-snug break-words"
+                                                                  style="background-color: {{ $shape->color }}1A; border: 1px solid {{ $shape->color }}55; color: #3D1804;">
+                                                                {{ $shape->name }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="py-3 px-2.5 sm:px-3 text-[#5C2B09] leading-snug align-middle">
+                                                            <ol class="list-decimal pl-4 sm:pl-5 space-y-1 text-[11px] sm:text-xs text-left break-words">
+                                                                @foreach ($shape->ciri_ciri ?? [] as $ciri)
+                                                                    <li>{{ $ciri }}</li>
+                                                                @endforeach
+                                                            </ol>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3" class="py-8 px-4 text-center text-xs sm:text-sm text-[#8A4416] font-bold">
+                                                            Data bangun datar belum tersedia. Silakan hubungi guru atau admin.
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    @if ($shapeList->isNotEmpty())
+                                        <div class="flex items-center justify-between gap-2 mt-3 px-1">
+                                            <x-btn-back id="btnShapePrev"
+                                                        onclick="changeShapePage(-1)"
+                                                        disabled
+                                                        size="w-10 h-10 sm:w-11 sm:h-11"
+                                                        variant="orange"
+                                                        title="Halaman Sebelumnya"
+                                                        aria-label="Halaman Sebelumnya"
+                                                        class="disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:scale-100" />
+
+                                            <div id="shapePageIndicator" class="text-xs sm:text-sm font-bold text-[#8A4416] bg-[#FFF2D6] px-3.5 py-1.5 rounded-full border border-[#E9C37A] shadow-2xs text-center">
+                                                Halaman 1 dari {{ $totalShapePages }}
+                                            </div>
+
+                                            <x-btn-next id="btnShapeNext"
+                                                        onclick="changeShapePage(1)"
+                                                        :disabled="$totalShapePages <= 1"
+                                                        size="w-10 h-10 sm:w-11 sm:h-11"
+                                                        variant="orange"
+                                                        title="Halaman Berikutnya"
+                                                        aria-label="Halaman Berikutnya"
+                                                        class="disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:scale-100" />
+                                        </div>
+                                    @endif
                                 </div>
 
                             </div>
-
-                            <!-- Spacer bawah agar saat di-scroll mentok, batas kartu bawah dan tabel tampak 100% sempurna -->
-                            <div class="h-4 sm:h-6 shrink-0"></div>
 
                         </div>
                     </div>
@@ -405,53 +277,11 @@
                     </div>
                 </div>
 
-                <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}" class="hidden">
-                    @csrf
-                </form>
-
                 <!-- SOUND SETTINGS (MODAL ONLY) -->
                 <x-sound-settings :renderTrigger="false" />
 
                 <!-- EXIT CONFIRMATION MODAL -->
-                <div id="exitModal" 
-                     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 font-['Jua'] select-none">
-                    
-                    <div class="absolute inset-0" onclick="closeExitModal()"></div>
-
-                    <div id="exitBox" 
-                         class="relative z-10 w-full max-w-[420px] transform scale-90 transition-all duration-300 rounded-3xl border-4 border-[#3D1804] px-6 py-6 shadow-[0_20px_40px_rgba(0,0,0,0.5),0_8px_0_#280E02]"
-                         style="background: linear-gradient(180deg, #9E531F 0%, #7E3E11 25%, #6E330C 65%, #522204 100%);">
-                        
-                        <div class="text-center mb-3.5 pt-1">
-                            <h2 class="text-2xl sm:text-3xl font-bold text-[#FFF2A6]" style="text-shadow: 2px 2px 0 #3D1804, -2px -2px 0 #3D1804, 2px -2px 0 #3D1804, -2px 2px 0 #3D1804;">
-                                Konfirmasi Keluar
-                            </h2>
-                            <p class="text-xs text-[#FFE8A3] font-medium mt-1">
-                                Apakah kamu yakin ingin keluar dari petualangan TARA?
-                            </p>
-                        </div>
-
-                        <div class="rounded-2xl border-3 border-[#612A07] bg-gradient-to-b from-[#FFFDF0] to-[#FCEEC7] p-4 sm:p-5 shadow text-center space-y-4">
-                            <p class="text-xs sm:text-sm text-[#785135] font-semibold leading-relaxed">
-                                Catatan belajarmu telah tersimpan. Kamu dapat kembali melanjutkan belajar kapan saja!
-                            </p>
-
-                            <div class="flex flex-col sm:flex-row items-center gap-2.5 pt-1">
-                                <button type="button" 
-                                        onclick="closeExitModal()" 
-                                        class="w-full flex-1 rounded-full border-3 border-white/90 bg-gradient-to-b from-[#4ADE80] via-[#22C55E] to-[#15803D] py-2.5 text-white font-bold text-sm sm:text-base tracking-wide shadow-[0_5px_0_#0F5128] hover:brightness-110 active:translate-y-[2px] cursor-pointer">
-                                    Lanjut Belajar
-                                </button>
-                                <button type="button" 
-                                        onclick="confirmExitAction()" 
-                                        class="w-full sm:w-auto px-6 rounded-full border-3 border-white/90 bg-gradient-to-b from-[#EF4444] via-[#DC2626] to-[#B91C1C] py-2.5 text-white font-bold text-sm sm:text-base tracking-wide shadow-[0_5px_0_#7F1D1D] hover:brightness-110 active:translate-y-[2px] cursor-pointer">
-                                    Ya, Keluar
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                <x-exit-modal />
 
             </div>
         </div>
@@ -490,35 +320,46 @@
                 }
             }
 
+            var currentShapePage = 0;
+            var totalShapePages = {{ $totalShapePages ?? 1 }};
+
+            function renderShapePagination() {
+                document.querySelectorAll('.shape-paginated-row').forEach(row => {
+                    const pageIdx = parseInt(row.getAttribute('data-shape-page'), 10);
+                    row.classList.toggle('hidden', pageIdx !== currentShapePage);
+                });
+
+                const indicator = document.getElementById('shapePageIndicator');
+                if (indicator) {
+                    indicator.textContent = `Halaman ${currentShapePage + 1} dari ${totalShapePages}`;
+                }
+
+                const prevBtn = document.getElementById('btnShapePrev');
+                const nextBtn = document.getElementById('btnShapeNext');
+                if (prevBtn) prevBtn.disabled = currentShapePage <= 0;
+                if (nextBtn) nextBtn.disabled = currentShapePage >= totalShapePages - 1;
+            }
+
+            function changeShapePage(delta) {
+                const next = currentShapePage + delta;
+                if (next < 0 || next >= totalShapePages) return;
+                currentShapePage = next;
+                if (window.globalAudio && typeof window.globalAudio.playSfx === 'function') {
+                    window.globalAudio.playSfx('button_click');
+                }
+                renderShapePagination();
+            }
+
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initBangunDatarGlb);
+                document.addEventListener('DOMContentLoaded', () => {
+                    initBangunDatarGlb();
+                    renderShapePagination();
+                });
             } else {
                 initBangunDatarGlb();
+                renderShapePagination();
             }
 
-            function handleExitWeb() {
-                var m = document.getElementById('exitModal');
-                var b = document.getElementById('exitBox');
-                if (m) { m.classList.remove('opacity-0', 'pointer-events-none'); m.classList.add('opacity-100'); }
-                if (b) { b.classList.remove('scale-90'); b.classList.add('scale-100'); }
-            }
-            function closeExitModal() {
-                var m = document.getElementById('exitModal');
-                var b = document.getElementById('exitBox');
-                if (m) { m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none'); }
-                if (b) { b.classList.remove('scale-100'); b.classList.add('scale-90'); }
-            }
-            function confirmExitAction() {
-                var f = document.getElementById('globalLogoutForm');
-                if (f) f.submit();
-            }
-
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeExitModal();
-                    if (typeof closeSettingsModal === 'function') closeSettingsModal();
-                }
-            });
-        </script>
+            </script>
     </body>
 </html>

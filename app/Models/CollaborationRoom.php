@@ -10,6 +10,7 @@ class CollaborationRoom extends Model
     use HasFactory;
 
     protected $fillable = [
+        'collaboration_session_id',
         'room_number',
         'name',
         'theme',
@@ -29,6 +30,11 @@ class CollaborationRoom extends Model
         'identification_data' => 'array',
         'evaluation_data' => 'array',
     ];
+
+    public function session()
+    {
+        return $this->belongsTo(CollaborationSession::class, 'collaboration_session_id');
+    }
 
     public function members()
     {

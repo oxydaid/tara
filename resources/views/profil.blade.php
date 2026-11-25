@@ -56,15 +56,15 @@
                 </div>
 
                 <!-- GOLDEN CREAM PANEL PROFIL -->
-                <div class="absolute top-[54px] sm:top-[58px] md:top-[62px] bottom-2 sm:bottom-2.5 md:bottom-3 left-[25%] sm:left-[26%] md:left-[27%] lg:left-[26%] xl:left-[25%] right-2 sm:right-3 md:right-4 z-30 flex items-center">
-                    <div class="relative w-full h-full flex flex-row rounded-[24px] sm:rounded-[32px] md:rounded-[36px] bg-[#FFFDF5] border-3 sm:border-4 border-[#E9C37A] shadow-[0_20px_50px_rgba(0,0,0,0.22),0_4px_16px_rgba(217,119,6,0.15)] overflow-hidden p-3.5 sm:p-4 md:p-5 lg:p-6 gap-3 sm:gap-4 md:gap-5">
+                <div class="absolute top-[60px] sm:top-[76px] lg:top-[96px] bottom-2 sm:bottom-3 lg:bottom-8 left-[25%] sm:left-[25%] md:left-[24%] lg:left-[21%] xl:left-[20%] right-2 sm:right-4 lg:right-10 xl:right-14 z-30 flex items-center">
+                    <div class="relative w-full h-full lg:h-auto lg:max-h-full flex flex-row rounded-[24px] sm:rounded-[32px] md:rounded-[36px] bg-[#FFFDF5] border-3 sm:border-4 border-[#E9C37A] shadow-[0_20px_50px_rgba(0,0,0,0.22),0_4px_16px_rgba(217,119,6,0.15)] overflow-hidden p-3.5 sm:p-4 md:p-5 lg:p-6 gap-3 sm:gap-4 md:gap-5">
                         
                         <!-- Ekor Balon Chat Mengarah ke Karakter Yuk Damar di Kiri -->
                         <div class="absolute -left-[20px] sm:-left-[24px] top-16 sm:top-20 -translate-y-1/2 w-0 h-0 border-t-[12px] sm:border-t-[14px] border-t-transparent border-r-[20px] sm:border-r-[24px] border-r-[#E9C37A] border-b-[12px] sm:border-b-[14px] border-b-transparent"></div>
                         <div class="absolute -left-[12px] sm:-left-[16px] top-16 sm:top-20 -translate-y-1/2 w-0 h-0 border-t-[12px] sm:border-t-[14px] border-t-transparent border-r-[20px] sm:border-r-[24px] border-r-[#FFFDF5] border-b-[12px] sm:border-b-[14px] border-b-transparent"></div>
 
                         <!-- KOLOM KIRI: DAFTAR 4 TAB MENU (MENTOK ATAS) -->
-                        <div class="w-[170px] sm:w-[190px] md:w-[220px] lg:w-[240px] flex-shrink-0 flex flex-col gap-2 sm:gap-2.5 justify-start pt-0.5 h-full">
+                        <div class="w-[170px] sm:w-[190px] md:w-[220px] lg:w-[240px] flex-shrink-0 flex flex-col gap-2 sm:gap-2.5 justify-start pt-0.5 h-full lg:h-auto">
                             
                             <!-- Tab 1: Deskripsi Media -->
                             <button type="button" 
@@ -129,7 +129,7 @@
                         </div>
 
                         <!-- KOLOM KANAN: KONTEN TAB AKTIF (MENTOK ATAS DENGAN SCROLL RAPI) -->
-                        <div class="flex-1 h-full flex flex-col justify-start overflow-y-auto pr-1 sm:pr-2 pt-0.5">
+                        <div class="flex-1 h-full lg:h-auto lg:max-h-[calc(100vh-176px)] flex flex-col justify-start overflow-y-auto pr-1 sm:pr-2 pt-0.5">
                             
                             <!-- 1. KONTEN: DESKRIPSI MEDIA -->
                             <div id="mTabContent-deskripsi" class="pTabContent block space-y-3">
@@ -144,12 +144,12 @@
                                     </h2>
                                 </div>
 
-                                <div class="text-xs sm:text-sm md:text-base text-[#4A3B32] leading-relaxed space-y-2">
+                                <div class="text-xs sm:text-sm md:text-base text-[#4A3B32] leading-relaxed space-y-2.5">
                                     <p>
-                                        <strong>TARA (Media Pembelajaran Etnomatematika)</strong> adalah media pembelajaran interaktif materi bangun datar yang mengangkat kearifan lokal lampion <strong>Damar Kurung khas Gresik</strong> karya maestro <strong>Mbah Mas'ud</strong>.
+                                        Hai, Salam kenal teman-teman! <strong>TARA (Lentera Eksplorasi Bangun Datar)</strong> merupakan media pembelajaran untuk kelas 4 Sekolah Dasar yang akan membantu kamu memahami jenis dan sifat bangun datar. Melalui kegiatan eksplorasi warisan budaya <strong>Damar Kurung khas Gresik</strong>, kamu diajak menerapkan pemahaman tentang karakteristik bangun datar untuk mengelompokkan jenis-jenis bangun datar yang ada pada motif Damar Kurung dengan baik dan benar!
                                     </p>
-                                    <p>
-                                        Media ini dirancang untuk memfasilitasi siswa dalam mengenali, mengidentifikasi, dan menganalisis sifat-sifat bangun datar seperti segitiga pada atap, persegi pada bingkai, persegi panjang pada dinding stand, trapesium pada kios, dan belah ketupat pada rumbai hiasan.
+                                    <p class="font-bold text-[#8A4416]">
+                                        Selamat bereksplorasi teman-teman!
                                     </p>
                                 </div>
 
@@ -198,9 +198,9 @@
                                             <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#8A4416] shrink-0" viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
                                             </svg>
-                                            <h3 class="font-bold text-[#8A4416] text-xs sm:text-sm md:text-base">Capaian Pembelajaran (CP) - Fase C Geometri</h3>
+                                            <h3 class="font-bold text-[#8A4416] text-xs sm:text-sm md:text-base">Capaian Pembelajaran (CP)</h3>
                                         </div>
-                                        <p>Peserta didik dapat mengonstruksi dan mengurai bangun datar (segitiga, segiempat, lingkaran) serta mengenali ciri-ciri visual, hubungan antar sisi, besar sudut, dan simetri pada objek budaya sekitar.</p>
+                                        <p>Pada materi ini murid dapat mendeskripsikan ciri-ciri berbagai bentuk bangun datar segi banyak dan bukan segi banyak.</p>
                                     </div>
 
                                     <div class="bg-[#FFF9EA] p-3 sm:p-3.5 rounded-2xl border border-[#E9C37A]/60">
@@ -210,11 +210,10 @@
                                             </svg>
                                             <h3 class="font-bold text-[#8A4416] text-xs sm:text-sm md:text-base">Tujuan Pembelajaran (TP)</h3>
                                         </div>
-                                        <ul class="list-disc list-inside space-y-0.5 text-xs sm:text-sm md:text-base">
-                                            <li>Mengidentifikasi minimal 6 dari 8 bangun datar pada motif Damar Kurung Gresik.</li>
-                                            <li>Menganalisis sifat-sifat geometri (jumlah sisi, besar sudut, simetri lipat & putar).</li>
-                                            <li>Bekerja sama secara aktif dalam tim kolaboratif untuk mewarnai motif dan menyelesaikan analisis.</li>
-                                        </ul>
+                                        <ol class="list-decimal pl-5 space-y-1.5 text-xs sm:text-sm md:text-base">
+                                            <li>Murid dapat menerapkan (C3) ciri-ciri berbagai bentuk bangun datar berdasarkan karakteristiknya pada motif Damar Kurung dengan benar.</li>
+                                            <li>Murid dapat mengelompokkan (C4) bentuk bangun datar pada motif Damar Kurung ke dalam segi banyak dan bukan segi banyak berdasarkan karakteristik sisi dan sudutnya dengan tepat.</li>
+                                        </ol>
                                     </div>
                                 </div>
                             </div>
@@ -242,7 +241,7 @@
                                     <div class="bg-[#FFF9EA] p-2.5 sm:p-3 rounded-2xl border border-[#E9C37A]/60 flex gap-3 items-start">
                                         <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#ECA144] text-white font-bold flex items-center justify-center flex-shrink-0 text-xs shadow-sm">2</div>
                                         <div>
-                                            <strong class="text-[#2D221C] text-xs sm:text-sm md:text-base">Tim Kolaborasi:</strong> Masuk ke Ruang 1-4 bersama kelompok (hingga 10 siswa). Bagi tugas, warnai sketsa Damar Kurung, dan isi tabel analisis bangun datar.
+                                            <strong class="text-[#2D221C] text-xs sm:text-sm md:text-base">Tim Kolaborasi:</strong> Masuk ke Ruang 1-8 bersama kelompok (hingga 5 siswa). Bagi tugas, warnai sketsa Damar Kurung, dan isi tabel analisis bangun datar.
                                         </div>
                                     </div>
                                     <div class="bg-[#FFF9EA] p-2.5 sm:p-3 rounded-2xl border border-[#E9C37A]/60 flex gap-3 items-start">
@@ -320,53 +319,11 @@
                     </div>
                 </div>
 
-                <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}" class="hidden">
-                    @csrf
-                </form>
-
                 <!-- SOUND SETTINGS (MODAL ONLY) -->
                 <x-sound-settings :renderTrigger="false" />
 
                 <!-- EXIT CONFIRMATION MODAL -->
-                <div id="exitModal" 
-                     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 font-['Jua'] select-none">
-                    
-                    <div class="absolute inset-0" onclick="closeExitModal()"></div>
-
-                    <div id="exitBox" 
-                         class="relative z-10 w-full max-w-[420px] transform scale-90 transition-all duration-300 rounded-3xl border-4 border-[#3D1804] px-6 py-6 shadow-[0_20px_40px_rgba(0,0,0,0.5),0_8px_0_#280E02]"
-                         style="background: linear-gradient(180deg, #9E531F 0%, #7E3E11 25%, #6E330C 65%, #522204 100%);">
-                        
-                        <div class="text-center mb-3.5 pt-1">
-                            <h2 class="text-2xl sm:text-3xl font-bold text-[#FFF2A6]" style="text-shadow: 2px 2px 0 #3D1804, -2px -2px 0 #3D1804, 2px -2px 0 #3D1804, -2px 2px 0 #3D1804;">
-                                Konfirmasi Keluar
-                            </h2>
-                            <p class="text-xs text-[#FFE8A3] font-medium mt-1">
-                                Apakah kamu yakin ingin keluar dari petualangan TARA?
-                            </p>
-                        </div>
-
-                        <div class="rounded-2xl border-3 border-[#612A07] bg-gradient-to-b from-[#FFFDF0] to-[#FCEEC7] p-4 sm:p-5 shadow text-center space-y-4">
-                            <p class="text-xs sm:text-sm text-[#785135] font-semibold leading-relaxed">
-                                Catatan belajarmu telah tersimpan. Kamu dapat kembali melanjutkan belajar kapan saja!
-                            </p>
-
-                            <div class="flex flex-col sm:flex-row items-center gap-2.5 pt-1">
-                                <button type="button" 
-                                        onclick="closeExitModal()" 
-                                        class="w-full flex-1 rounded-full border-3 border-white/90 bg-gradient-to-b from-[#4ADE80] via-[#22C55E] to-[#15803D] py-2.5 text-white font-bold text-sm sm:text-base tracking-wide shadow-[0_5px_0_#0F5128] hover:brightness-110 active:translate-y-[2px] cursor-pointer">
-                                    Lanjut Belajar
-                                </button>
-                                <button type="button" 
-                                        onclick="confirmExitAction()" 
-                                        class="w-full sm:w-auto px-6 rounded-full border-3 border-white/90 bg-gradient-to-b from-[#EF4444] via-[#DC2626] to-[#B91C1C] py-2.5 text-white font-bold text-sm sm:text-base tracking-wide shadow-[0_5px_0_#7F1D1D] hover:brightness-110 active:translate-y-[2px] cursor-pointer">
-                                    Ya, Keluar
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                <x-exit-modal />
 
             </div>
         </div>
@@ -421,29 +378,6 @@
                 }
             }
 
-            function handleExitWeb() {
-                var m = document.getElementById('exitModal');
-                var b = document.getElementById('exitBox');
-                if (m) { m.classList.remove('opacity-0', 'pointer-events-none'); m.classList.add('opacity-100'); }
-                if (b) { b.classList.remove('scale-90'); b.classList.add('scale-100'); }
-            }
-            function closeExitModal() {
-                var m = document.getElementById('exitModal');
-                var b = document.getElementById('exitBox');
-                if (m) { m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none'); }
-                if (b) { b.classList.remove('scale-100'); b.classList.add('scale-90'); }
-            }
-            function confirmExitAction() {
-                var f = document.getElementById('globalLogoutForm');
-                if (f) f.submit();
-            }
-
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeExitModal();
-                    if (typeof closeSettingsModal === 'function') closeSettingsModal();
-                }
-            });
-        </script>
+            </script>
     </body>
 </html>
