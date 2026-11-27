@@ -60,7 +60,7 @@ class BangunDatarShapeSeeder extends Seeder
                 'bagian_damar_kurung' => 'Atap Menara',
                 'urutan' => 4,
                 'ciri_ciri' => [
-                    'Ketiga sisinya sama panjang (ditandai 1 garis sama panjang)',
+                    'Ketiga sisinya sama panjang',
                     'Ketiga sudutnya sama besar, masing-masing 60°',
                     'Memiliki 3 simetri lipat dan 3 simetri putar',
                 ],
@@ -111,7 +111,7 @@ class BangunDatarShapeSeeder extends Seeder
                 'bagian_damar_kurung' => 'Sudut Penyangga',
                 'urutan' => 8,
                 'ciri_ciri' => [
-                    'Memiliki 1 sudut siku-siku (tepat 90°, bertanda kotak)',
+                    'Memiliki 1 sudut siku-siku (tepat 90°)',
                     'Memiliki 2 sudut lancip yang berjumlah 90°',
                     'Sisi di depan sudut siku-siku adalah sisi terpanjang',
                 ],

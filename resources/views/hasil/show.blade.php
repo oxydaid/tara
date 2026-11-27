@@ -47,21 +47,6 @@
             border: 2px solid #FFFDF5;
         }
 
-        .hasil-svg-viewport {
-            overflow: hidden;
-        }
-
-        .hasil-svg-viewport svg {
-            width: 100%;
-            max-width: 240px;
-            height: auto;
-            max-height: 240px;
-            display: block;
-            margin: 0 auto;
-            overflow: hidden;
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.1));
-        }
-
         @media screen and (max-width: 1024px) {
             .hasil-stage-wrapper {
                 top: 60px !important;
@@ -169,31 +154,16 @@
 
                     <!-- Grid Karya Pewarnaan + Anggota Kelompok -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4">
-                        <!-- Karya Pewarnaan 4 Sisi -->
+                        <!-- Karya Pewarnaan 4 Sisi (Kubus 3D Interaktif + Tampilan Datar 2D) -->
                         <div class="lg:col-span-5 bg-white rounded-2xl border-2 border-[#E9C37A] p-3 sm:p-4 shadow-2xs flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
-                                    <h2 class="text-xs sm:text-sm font-bold text-[#8A4416]">Misi 1: Karya Pewarnaan 4 Sisi</h2>
-                                    <div class="flex items-center gap-1">
-                                        @for ($sisi = 1; $sisi <= 4; $sisi++)
-                                            <button type="button"
-                                                    onclick="selectHasilCanvas({{ $sisi }})"
-                                                    id="btnHasilTabCanvas{{ $sisi }}"
-                                                    class="px-2.5 py-0.5 rounded-full text-[11px] font-bold transition-all cursor-pointer {{ $sisi === 1 ? 'bg-[#E57354] text-white shadow-2xs' : 'bg-[#FFF2D6] text-[#8A4416] border border-[#E9C37A] hover:bg-[#FFE8B8]' }}">
-                                                Sisi {{ $sisi }}
-                                            </button>
-                                        @endfor
-                                    </div>
-                                </div>
-
-                                <div class="bg-[#FFF9EA] rounded-xl border border-[#E9C37A]/70 p-3 flex items-center justify-center min-h-[220px]">
-                                    @for ($sisi = 1; $sisi <= 4; $sisi++)
-                                        <div id="hasilCanvasViewport-{{ $sisi }}" class="hasil-svg-viewport w-full {{ $sisi === 1 ? '' : 'hidden' }}">
-                                            {!! $canvases[$sisi] ?? '' !!}
-                                        </div>
-                                    @endfor
-                                </div>
-                            </div>
+                            <x-damar-kurung-cube-viewer
+                                uid="hasil"
+                                :canvasesCube="$canvasesCube"
+                                :canvasesFlat="$canvasesFlat"
+                                :sanitizedColors="$sanitizedColors"
+                                theme="student"
+                                title="Misi 1: Karya Pewarnaan 4 Sisi"
+                            />
                         </div>
 
                         <!-- Anggota Kelompok -->
@@ -332,35 +302,6 @@
     </div>
 
     <script>
-        const HASIL_COLORING_DATA = @json($sanitizedColors);
-
-        function applyHasilColors() {
-            if (!HASIL_COLORING_DATA || typeof HASIL_COLORING_DATA !== 'object') return;
-            Object.entries(HASIL_COLORING_DATA).forEach(([partKey, color]) => {
-                const rawKey = String(partKey).replace(/^review-/, '').replace(/^ident-/, '');
-                const el = document.getElementById('hasil-' + rawKey);
-                if (el) {
-                    el.setAttribute('fill', color);
-                }
-            });
-        }
-
-        function selectHasilCanvas(num) {
-            for (let i = 1; i <= 4; i++) {
-                const btn = document.getElementById('btnHasilTabCanvas' + i);
-                const vp = document.getElementById('hasilCanvasViewport-' + i);
-                if (btn) {
-                    btn.className = i === num
-                        ? 'px-2.5 py-0.5 rounded-full text-[11px] font-bold transition-all cursor-pointer bg-[#E57354] text-white shadow-2xs'
-                        : 'px-2.5 py-0.5 rounded-full text-[11px] font-bold transition-all cursor-pointer bg-[#FFF2D6] text-[#8A4416] border border-[#E9C37A] hover:bg-[#FFE8B8]';
-                }
-                if (vp) {
-                    vp.classList.toggle('hidden', i !== num);
-                }
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', applyHasilColors);
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 if (typeof closeExitModal === 'function') closeExitModal();

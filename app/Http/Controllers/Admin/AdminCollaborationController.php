@@ -167,6 +167,8 @@ class AdminCollaborationController extends AdminController
         $submission = CollaborationSubmission::with('session')->findOrFail($id);
 
         $canvases = CollaborationSubmissionFormatter::buildCanvases('admin-', 'admin-canvas-part');
+        $canvasesCube = CollaborationSubmissionFormatter::buildCanvases('admin-cube-', 'admin-cube-part');
+        $canvasesFlat = CollaborationSubmissionFormatter::buildCanvases('admin-flat-', 'admin-flat-part');
         $sanitizedColors = CollaborationSubmissionFormatter::sanitizeColorMap(
             is_array($submission->coloring_data) ? $submission->coloring_data : []
         );
@@ -177,6 +179,8 @@ class AdminCollaborationController extends AdminController
         return view('admin.kolaborasi.show', [
             'submission' => $submission,
             'canvases' => $canvases,
+            'canvasesCube' => $canvasesCube,
+            'canvasesFlat' => $canvasesFlat,
             'sanitizedColors' => $sanitizedColors,
             'identificationItems' => $identificationItems,
         ]);

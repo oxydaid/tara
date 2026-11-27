@@ -168,6 +168,8 @@ class CollaborationTest extends TestCase
         $response->assertSee('TOTAL_EVAL_ROWS = 4', false);
         $response->assertSee('toggleEvalPeerDropdown', false);
         $response->assertSee('selectEvalPeer', false);
+        $response->assertDontSee('Isi Nama Manual', false);
+        $response->assertDontSee('enableEvalManualMode', false);
 
         $profilResponse = $this->actingAs($user)->get('/profil');
         $profilResponse->assertStatus(200);
@@ -398,6 +400,10 @@ class CollaborationTest extends TestCase
         $submitA = $this->actingAs($studentA)->postJson('/api/kolaborasi/room/1/submit', [
             'group_name' => 'Kelompok Garuda',
             'leader_name' => 'Andi',
+            'coloring_data' => [
+                'c1-p0' => '#FF5733',
+                'c2-p0' => '#33FF57',
+            ],
             'identification_data' => [
                 ['bendaKey' => 'atap', 'bendaName' => 'Atap', 'shape' => 'segitiga', 'ciri' => '3 sisi', 'svgSnippet' => '<svg viewBox="0 0 24 24"><polygon points="12,2 2,22 22,22" fill="#E57354"/></svg>'],
             ],
@@ -423,10 +429,24 @@ class CollaborationTest extends TestCase
         $studentC = $this->createStudent('Citra', '03');
         $this->actingAs($studentC)->postJson('/api/kolaborasi/join', ['room_number' => 1])->assertStatus(422);
 
-        // Admin detail page displays visual SVG Misi 2 shape
+        // Student detail page renders 3D rotatable Damar Kurung cube + 2D toggle + distinct SVG prefixes
+        $studentShow = $this->actingAs($studentA)->get(route('hasil.show', $submission->id));
+        $studentShow->assertStatus(200);
+        $studentShow->assertSee('hasil-cube-stage', false);
+        $studentShow->assertSee('hasil-cube-c1-p0', false);
+        $studentShow->assertSee('hasil-flat-c1-p0', false);
+        $studentShow->assertSee('Kubus 3D');
+        $studentShow->assertSee('Tampilan Datar 2D');
+        $studentShow->assertSee('#FF5733');
+
+        // Admin detail page displays 3D cube viewer + visual SVG Misi 2 shape
         $admin = User::factory()->create(['is_admin' => 1]);
         $adminShow = $this->actingAs($admin)->get(route('admin.kolaborasi.show', $submission->id));
         $adminShow->assertStatus(200);
+        $adminShow->assertSee('admin-cube-stage', false);
+        $adminShow->assertSee('admin-cube-c1-p0', false);
+        $adminShow->assertSee('admin-flat-c1-p0', false);
+        $adminShow->assertSee('Kubus 3D');
         $adminShow->assertSee('<polygon points="12,2 2,22 22,22" fill="#E57354"', false);
     }
 }

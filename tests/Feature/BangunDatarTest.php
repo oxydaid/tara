@@ -12,7 +12,7 @@ class BangunDatarTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_seeder_generates_18_bangun_datar_shapes_with_geometric_markers(): void
+    public function test_seeder_generates_18_clean_bangun_datar_shapes_without_markers(): void
     {
         $this->seed(BangunDatarShapeSeeder::class);
 
@@ -22,12 +22,19 @@ class BangunDatarTest extends TestCase
 
         $segitigaSamaSisi = BangunDatarShape::where('type', 'segitiga')->where('subtype', 'sama_sisi')->first();
         $this->assertNotNull($segitigaSamaSisi);
-        $this->assertStringContainsString('<line', $segitigaSamaSisi->svg_inline);
-        $this->assertStringContainsString('<path', $segitigaSamaSisi->svg_inline);
+        $this->assertStringContainsString('<polygon', $segitigaSamaSisi->svg_inline);
+        $this->assertStringNotContainsString('<line', $segitigaSamaSisi->svg_inline);
+        $this->assertStringNotContainsString('<path', $segitigaSamaSisi->svg_inline);
+        $this->assertStringNotContainsString('ditandai', implode(' ', $segitigaSamaSisi->ciri_ciri ?? []));
+
+        $segitigaSiku = BangunDatarShape::where('type', 'segitiga')->where('subtype', 'siku_siku')->first();
+        $this->assertNotNull($segitigaSiku);
+        $this->assertStringNotContainsString('bertanda', implode(' ', $segitigaSiku->ciri_ciri ?? []));
 
         $trapesiumSiku = BangunDatarShape::where('type', 'trapesium')->where('subtype', 'siku_siku')->first();
         $this->assertNotNull($trapesiumSiku);
-        $this->assertStringContainsString('<polyline', $trapesiumSiku->svg_inline);
+        $this->assertStringContainsString('<polygon', $trapesiumSiku->svg_inline);
+        $this->assertStringNotContainsString('<polyline', $trapesiumSiku->svg_inline);
     }
 
     public function test_profil_page_displays_updated_description_cp_and_tp(): void
@@ -41,9 +48,10 @@ class BangunDatarTest extends TestCase
         $response->assertSee('Selamat bereksplorasi teman-teman!');
         $response->assertSee('Pada materi ini murid dapat mendeskripsikan ciri-ciri berbagai bentuk bangun datar segi banyak dan bukan segi banyak.');
         $response->assertSee('Murid dapat mengelompokkan (C4)');
+        $response->assertSee('Cek Hasil:');
     }
 
-    public function test_eksplorasi_bangun_datar_renders_seeded_shapes_and_pagination(): void
+    public function test_eksplorasi_bangun_datar_renders_collapsed_groups_with_modal_variants_and_pagination(): void
     {
         $this->seed(BangunDatarShapeSeeder::class);
         $student = User::factory()->create(['is_admin' => 0]);
@@ -52,11 +60,17 @@ class BangunDatarTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Persegi');
+        $response->assertSee('Segitiga');
+        $response->assertSee('Trapesium');
+        $response->assertSee('Lihat 6 Jenis');
+        $response->assertSee('shapeVariantModal');
+        $response->assertSee('SHAPE_VARIANT_GROUPS');
         $response->assertSee('Segitiga Sama Sisi');
         $response->assertSee('Trapesium Tiga Sisi Sama Panjang');
-        $response->assertSee('Halaman 1 dari 9');
+        $response->assertSee('Halaman 1 dari 4');
         $response->assertSee('btnShapePrev');
         $response->assertSee('btnShapeNext');
+        $this->assertSame(8, substr_count($response->getContent(), 'data-shape-page="'));
     }
 
     public function test_cached_shapes_work_with_serializable_classes_disabled(): void
@@ -88,7 +102,7 @@ class BangunDatarTest extends TestCase
         $this->assertCount(18, $response->json('shapes'));
     }
 
-    public function test_kolaborasi_loads_master_shapes_in_misi_2_dropdown(): void
+    public function test_kolaborasi_loads_master_shapes_in_misi_2_dropdown_without_icons(): void
     {
         $this->seed(BangunDatarShapeSeeder::class);
         $student = User::factory()->create(['is_admin' => 0]);
@@ -99,6 +113,8 @@ class BangunDatarTest extends TestCase
         $response->assertSee('Trapesium Tiga Sisi Sama Panjang');
         $response->assertSee('Segitiga Siku-Siku');
         $response->assertSee('BANGUN_DATAR_MASTER');
+        $response->assertDontSee('${s.icon', false);
+        $response->assertDontSee('${selectedShapeObj.icon', false);
     }
 
     public function test_admin_can_crud_bangun_datar_shapes(): void

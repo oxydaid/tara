@@ -250,6 +250,12 @@
                                             <strong class="text-[#2D221C] text-xs sm:text-sm md:text-base">Pengaturan & Profil:</strong> Gunakan tombol di pojok kanan atas untuk mengatur suara musik (BGM) dan keluar dari aplikasi.
                                         </div>
                                     </div>
+                                    <div class="bg-[#FFF9EA] p-2.5 sm:p-3 rounded-2xl border border-[#E9C37A]/60 flex gap-3 items-start">
+                                        <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#7E57C2] text-white font-bold flex items-center justify-center flex-shrink-0 text-xs shadow-sm">4</div>
+                                        <div>
+                                            <strong class="text-[#2D221C] text-xs sm:text-sm md:text-base">Cek Hasil:</strong> Buka menu Hasil untuk memantau status pengerjaan Ruang 1-8 serta melihat karya Damar Kurung, tabel bangun datar, dan catatan apresiasi kelompok pada sesi aktif.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

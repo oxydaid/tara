@@ -7,24 +7,8 @@
 @php
     $members = is_array($submission->tasks_data) ? $submission->tasks_data : [];
     $evaluations = is_array($submission->evaluation_data) ? $submission->evaluation_data : [];
-
-    $adminCanvas1 = $canvases[1] ?? '';
-    $adminCanvas2 = $canvases[2] ?? '';
-    $adminCanvas3 = $canvases[3] ?? '';
-    $adminCanvas4 = $canvases[4] ?? '';
+    $defaultSide = ($submission->room_number >= 1 && $submission->room_number <= 4) ? $submission->room_number : 1;
 @endphp
-
-<style>
-    .admin-svg-viewport svg {
-        width: 100%;
-        max-width: 250px;
-        height: auto;
-        max-height: 320px;
-        display: block;
-        margin: 0 auto;
-        filter: drop-shadow(0 6px 12px rgba(0,0,0,0.1));
-    }
-</style>
 
 <div class="space-y-6 font-['Jua']">
     <!-- Header Navigasi -->
@@ -83,49 +67,17 @@
 
     <!-- Grid 2 Kolom: Pewarnaan & Pembagian Tugas (Tabel 1) -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-        <!-- Hasil Pewarnaan Sketsa (4 Kanvas) -->
+        <!-- Hasil Pewarnaan Sketsa (Kubus 3D Interaktif + 4 Kanvas Datar) -->
         <div class="md:col-span-5 bg-white rounded-3xl border-2 border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
-            <div>
-                <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
-                    <h3 class="font-bold text-base text-slate-800 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                        </svg>
-                        <span>Karya Pewarnaan 4 Sisi Motif</span>
-                    </h3>
-                </div>
-
-                <!-- Tab Pilihan Sisi di Admin -->
-                <div class="flex items-center gap-1.5 mb-3 overflow-x-auto pb-1">
-                    <button type="button" onclick="selectAdminCanvas(1)" id="btnAdminTabCanvas1" class="admin-tab-btn px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-amber-500 text-white shadow-2xs">
-                        Sisi 1
-                    </button>
-                    <button type="button" onclick="selectAdminCanvas(2)" id="btnAdminTabCanvas2" class="admin-tab-btn px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-slate-100 text-slate-700 hover:bg-slate-200">
-                        Sisi 2
-                    </button>
-                    <button type="button" onclick="selectAdminCanvas(3)" id="btnAdminTabCanvas3" class="admin-tab-btn px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-slate-100 text-slate-700 hover:bg-slate-200">
-                        Sisi 3
-                    </button>
-                    <button type="button" onclick="selectAdminCanvas(4)" id="btnAdminTabCanvas4" class="admin-tab-btn px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-slate-100 text-slate-700 hover:bg-slate-200">
-                        Sisi 4
-                    </button>
-                </div>
-
-                <div class="bg-[#FFF9EA] p-3 sm:p-4 rounded-2xl border border-[#E9C37A]/60 flex justify-center min-h-[260px] max-h-[380px] overflow-hidden">
-                    <div id="adminCanvasViewport-1" class="admin-svg-viewport w-full flex justify-center">
-                        {!! $adminCanvas1 !!}
-                    </div>
-                    <div id="adminCanvasViewport-2" class="admin-svg-viewport w-full flex justify-center hidden">
-                        {!! $adminCanvas2 !!}
-                    </div>
-                    <div id="adminCanvasViewport-3" class="admin-svg-viewport w-full flex justify-center hidden">
-                        {!! $adminCanvas3 !!}
-                    </div>
-                    <div id="adminCanvasViewport-4" class="admin-svg-viewport w-full flex justify-center hidden">
-                        {!! $adminCanvas4 !!}
-                    </div>
-                </div>
-            </div>
+            <x-damar-kurung-cube-viewer
+                uid="admin"
+                :canvasesCube="$canvasesCube"
+                :canvasesFlat="$canvasesFlat"
+                :sanitizedColors="$sanitizedColors"
+                theme="admin"
+                :defaultSide="$defaultSide"
+                title="Karya Pewarnaan 4 Sisi Motif"
+            />
             <p class="text-xs text-slate-400 text-center mt-2">Dikerjakan bersama-sama oleh seluruh anggota tim</p>
         </div>
 
@@ -274,49 +226,5 @@
         @endif
     </div>
 </div>
-
-<script>
-    const coloringData = @json($sanitizedColors);
-
-    function applyAdminColors() {
-        if (!coloringData || typeof coloringData !== 'object') return;
-        Object.keys(coloringData).forEach(id => {
-            const rawId = String(id).replace(/^(review-|admin-)/, '');
-            const el = document.getElementById('admin-' + rawId);
-            if (el) {
-                el.setAttribute('fill', coloringData[id]);
-            }
-        });
-    }
-
-    function selectAdminCanvas(num) {
-        for (let i = 1; i <= 4; i++) {
-            const btn = document.getElementById('btnAdminTabCanvas' + i);
-            const vp = document.getElementById('adminCanvasViewport-' + i);
-            if (btn) {
-                if (i === num) {
-                    btn.className = 'admin-tab-btn px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-amber-500 text-white shadow-2xs';
-                } else {
-                    btn.className = 'admin-tab-btn px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-slate-100 text-slate-700 hover:bg-slate-200';
-                }
-            }
-            if (vp) {
-                if (i === num) {
-                    vp.classList.remove('hidden');
-                } else {
-                    vp.classList.add('hidden');
-                }
-            }
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        applyAdminColors();
-        const defaultRoom = {{ $submission->room_number ?? 1 }};
-        if (defaultRoom >= 1 && defaultRoom <= 4) {
-            selectAdminCanvas(defaultRoom);
-        }
-    });
-</script>
 @endsection
 

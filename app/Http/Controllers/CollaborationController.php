@@ -896,6 +896,8 @@ class CollaborationController extends Controller
         $submission = CollaborationSubmission::with('session')->findOrFail($id);
 
         $canvases = CollaborationSubmissionFormatter::buildCanvases('hasil-', 'hasil-canvas-part');
+        $canvasesCube = CollaborationSubmissionFormatter::buildCanvases('hasil-cube-', 'hasil-cube-part');
+        $canvasesFlat = CollaborationSubmissionFormatter::buildCanvases('hasil-flat-', 'hasil-flat-part');
         $sanitizedColors = CollaborationSubmissionFormatter::sanitizeColorMap(
             is_array($submission->coloring_data) ? $submission->coloring_data : []
         );
@@ -906,6 +908,8 @@ class CollaborationController extends Controller
         return view('hasil.show', [
             'submission' => $submission,
             'canvases' => $canvases,
+            'canvasesCube' => $canvasesCube,
+            'canvasesFlat' => $canvasesFlat,
             'sanitizedColors' => $sanitizedColors,
             'identificationItems' => $identificationItems,
         ]);

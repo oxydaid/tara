@@ -1881,7 +1881,6 @@
                 peerId: '',
                 name: '',
                 noAbsen: '-',
-                isManual: false,
                 manualSkipped: false,
                 rating: 'Sangat Baik',
                 note: ''
@@ -2482,7 +2481,7 @@
         function captureEvalDomState() {
             for (let idx = 0; idx < TOTAL_EVAL_ROWS; idx++) {
                 if (!evalRowStates[idx]) {
-                    evalRowStates[idx] = { peerId: '', name: '', noAbsen: '-', isManual: false, manualSkipped: false, rating: 'Sangat Baik', note: '' };
+                    evalRowStates[idx] = { peerId: '', name: '', noAbsen: '-', manualSkipped: false, rating: 'Sangat Baik', note: '' };
                 }
                 const noteEl = document.getElementById(`evalNote-${idx}`);
                 const rateEl = document.getElementById(`evalRating-${idx}`);
@@ -2496,8 +2495,6 @@
                     evalRowStates[idx].rating = rateEl.value;
                 }
                 if (nameEl) {
-                    const isManualInput = nameEl.tagName === 'INPUT' && nameEl.type === 'text';
-                    evalRowStates[idx].isManual = isManualInput;
                     evalRowStates[idx].peerId = nameEl.dataset.peerId || '';
                     evalRowStates[idx].name = nameEl.value || '';
                 }
@@ -2530,14 +2527,7 @@
                             state.peerId = savedPeerId;
                             state.name = matchedPeer.user_name;
                             state.noAbsen = matchedPeer.no_absen || '-';
-                            state.isManual = false;
                             state.manualSkipped = false;
-                        } else if (ev.peer_name && !/^Teman Anggota \d+$/i.test(String(ev.peer_name).trim())) {
-                            state.peerId = '';
-                            state.name = String(ev.peer_name);
-                            state.noAbsen = ev.peer_no_absen || '-';
-                            state.isManual = true;
-                            state.manualSkipped = true;
                         }
                         if (ev.rating) state.rating = ev.rating;
                         if (ev.note) state.note = ev.note;
@@ -2550,7 +2540,7 @@
             // Sinkronkan nama/absen terbaru teman yang masih berada di ruang, atau kosongkan slot jika teman keluar sebelum ada catatan
             for (let idx = 0; idx < TOTAL_EVAL_ROWS; idx++) {
                 const state = evalRowStates[idx];
-                if (!state.isManual && state.peerId) {
+                if (state.peerId) {
                     const activePeer = peerById.get(String(state.peerId));
                     if (activePeer) {
                         state.name = activePeer.user_name;
@@ -2567,14 +2557,14 @@
             const usedPeerIds = new Set();
             for (let idx = 0; idx < TOTAL_EVAL_ROWS; idx++) {
                 const state = evalRowStates[idx];
-                if (!state.isManual && state.peerId && peerById.has(String(state.peerId))) {
+                if (state.peerId && peerById.has(String(state.peerId))) {
                     usedPeerIds.add(String(state.peerId));
                 }
             }
 
             for (let idx = 0; idx < TOTAL_EVAL_ROWS; idx++) {
                 const state = evalRowStates[idx];
-                if (!state.isManual && !state.manualSkipped && !state.peerId) {
+                if (!state.manualSkipped && !state.peerId) {
                     const nextPeer = allPeers.find(p => !usedPeerIds.has(String(p.user_id)));
                     if (nextPeer) {
                         state.peerId = String(nextPeer.user_id);
@@ -2600,13 +2590,13 @@
                     `<button type="button"
                             data-peer-id=""
                             onclick="selectEvalPeer(event, ${idx}, '')"
-                            class="w-full text-left px-3 py-2 flex items-center justify-between gap-2 hover:bg-[#F0FDF4] text-[#6D4C33] transition-colors cursor-pointer ${!selectedPeerId && !state.isManual ? 'bg-[#DCFCE7] font-bold text-[#15803D]' : ''}">
+                            class="w-full text-left px-3 py-2 flex items-center justify-between gap-2 hover:bg-[#F0FDF4] text-[#6D4C33] transition-colors cursor-pointer ${!selectedPeerId ? 'bg-[#DCFCE7] font-bold text-[#15803D]' : ''}">
                         <span>-- Pilih Teman --</span>
                     </button>`,
                     ...allPeers.map(p => {
                         const pid = String(p.user_id);
                         const isSelectedHere = pid === String(selectedPeerId);
-                        const assignedOtherIdx = evalRowStates.findIndex((s, rIdx) => rIdx !== idx && !s.isManual && String(s.peerId) === pid);
+                        const assignedOtherIdx = evalRowStates.findIndex((s, rIdx) => rIdx !== idx && String(s.peerId) === pid);
                         return `
                             <button type="button"
                                     data-peer-id="${escapeHtmlAttr(pid)}"
@@ -2618,71 +2608,34 @@
                                 </span>
                             </button>
                         `;
-                    }),
-                    `<div class="border-t border-[#E9C37A]/50 mt-1 pt-1">
-                        <button type="button"
-                                onclick="enableEvalManualMode(event, ${idx})"
-                                class="w-full text-left px-3 py-2 flex items-center gap-1.5 hover:bg-[#FFF2D6] text-[#8A4416] transition-colors cursor-pointer">
-                            <span>✎ Isi Nama Manual...</span>
-                        </button>
-                    </div>`
+                    })
                 ].join('');
 
                 html += `
                         <tr class="hover:bg-[#FFF8E7] transition-colors">
                             <td class="p-2 sm:p-2.5 text-center font-bold text-[#548466] text-xs sm:text-sm">${idx + 1}</td>
                             <td class="p-2 sm:p-2.5">
-                                ${state.isManual ? `
-                                    <div class="flex items-center gap-1.5">
-                                        <input type="text"
-                                               id="evalName-${idx}"
-                                               data-peer-id=""
-                                               value="${escapeHtmlAttr(state.name)}"
-                                               oninput="autoSaveRoomData()"
-                                               placeholder="Ketik nama teman..."
-                                               class="w-full min-w-0 bg-[#FFFDF5] border border-[#E9C37A]/80 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-bold text-[#3D1804] outline-none focus:border-[#548466]">
-                                        <button type="button"
-                                                onclick="enableEvalDropdownMode(${idx})"
-                                                title="Pilih dari anggota ruang"
-                                                class="shrink-0 p-1.5 rounded-lg bg-[#FFF2D6] border border-[#E9C37A] text-[#8A4416] hover:bg-[#FFE8B8] cursor-pointer transition-colors">
-                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </button>
+                                <div class="relative custom-eval-peer-dropdown w-full" data-eval-peer-idx="${idx}">
+                                    <input type="hidden" id="evalName-${idx}" data-peer-id="${escapeHtmlAttr(selectedPeerId)}" value="${escapeHtmlAttr(displayName)}">
+                                    <button type="button"
+                                            id="evalPeerBtn-${idx}"
+                                            onclick="toggleEvalPeerDropdown(event, ${idx})"
+                                            class="w-full flex items-center justify-between gap-1.5 bg-[#FFFDF5] border border-[#E9C37A]/80 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-bold ${displayName ? 'text-[#3D1804]' : 'text-[#8A4416]/75'} outline-none cursor-pointer hover:bg-[#F0FDF4] active:scale-[0.98] transition-all text-left">
+                                        <span id="evalPeerLabel-${idx}" class="truncate">${displayName ? escapeHtmlText(displayName) : (allPeers.length > 0 ? '-- Pilih Teman --' : 'Menunggu teman...')}</span>
+                                        <svg id="evalPeerArrow-${idx}" class="w-3.5 h-3.5 text-[#548466] shrink-0 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </button>
+                                    <div id="evalPeerMenu-${idx}"
+                                         class="eval-peer-menu hidden fixed z-[9999] bg-[#FFFDF5] border-2 border-[#548466]/40 rounded-xl shadow-lg overflow-y-auto py-1 text-xs sm:text-sm font-bold pointer-events-auto"
+                                         style="max-height: 240px;">
+                                        ${peerMenuItems}
                                     </div>
-                                ` : `
-                                    <div class="relative custom-eval-peer-dropdown w-full" data-eval-peer-idx="${idx}">
-                                        <input type="hidden" id="evalName-${idx}" data-peer-id="${escapeHtmlAttr(selectedPeerId)}" value="${escapeHtmlAttr(displayName)}">
-                                        <button type="button"
-                                                id="evalPeerBtn-${idx}"
-                                                onclick="toggleEvalPeerDropdown(event, ${idx})"
-                                                class="w-full flex items-center justify-between gap-1.5 bg-[#FFFDF5] border border-[#E9C37A]/80 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-bold ${displayName ? 'text-[#3D1804]' : 'text-[#8A4416]/75'} outline-none cursor-pointer hover:bg-[#F0FDF4] active:scale-[0.98] transition-all text-left">
-                                            <span id="evalPeerLabel-${idx}" class="truncate">${displayName ? escapeHtmlText(displayName) : (allPeers.length > 0 ? '-- Pilih Teman --' : 'Menunggu teman...')}</span>
-                                            <svg id="evalPeerArrow-${idx}" class="w-3.5 h-3.5 text-[#548466] shrink-0 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </button>
-                                        <div id="evalPeerMenu-${idx}"
-                                             class="eval-peer-menu hidden fixed z-[9999] bg-[#FFFDF5] border-2 border-[#548466]/40 rounded-xl shadow-lg overflow-y-auto py-1 text-xs sm:text-sm font-bold pointer-events-auto"
-                                             style="max-height: 240px;">
-                                            ${peerMenuItems}
-                                        </div>
-                                    </div>
-                                `}
+                                </div>
                             </td>
                             <td class="p-2 sm:p-2.5 text-center font-bold text-[#548466] text-xs sm:text-sm">
-                                ${state.isManual ? `
-                                    <input type="text"
-                                           id="evalAbsen-${idx}"
-                                           data-peer-id=""
-                                           value="${escapeHtmlAttr(state.noAbsen === '-' ? '' : state.noAbsen)}"
-                                           oninput="autoSaveRoomData()"
-                                           placeholder="-"
-                                           class="w-16 mx-auto text-center bg-[#FFFDF5] border border-[#E9C37A]/80 rounded-lg px-1 py-1.5 text-xs sm:text-sm font-bold text-[#548466] outline-none focus:border-[#548466]">
-                                ` : `
-                                    <span id="evalAbsenDisplay-${idx}">${escapeHtmlText(displayAbsen)}</span>
-                                    <input type="hidden" id="evalAbsen-${idx}" data-peer-id="${escapeHtmlAttr(selectedPeerId)}" value="${escapeHtmlAttr(displayAbsen)}">
-                                `}
+                                <span id="evalAbsenDisplay-${idx}">${escapeHtmlText(displayAbsen)}</span>
+                                <input type="hidden" id="evalAbsen-${idx}" data-peer-id="${escapeHtmlAttr(selectedPeerId)}" value="${escapeHtmlAttr(displayAbsen)}">
                             </td>
                             <td class="p-2 sm:p-2.5">
                                 <div class="relative custom-eval-dropdown w-full" data-eval-idx="${idx}">
@@ -3231,23 +3184,19 @@
                 const shapes = Array.isArray(BANGUN_DATAR_MASTER)
                     ? BANGUN_DATAR_MASTER.map(s => ({
                         val: s.key,
-                        label: s.name,
-                        icon: s.custom_image
-                            ? `<img src="${s.custom_image}" alt="" class="w-4 h-4 lg:w-5 lg:h-5 object-contain shrink-0">`
-                            : (s.svg ? `<span class="w-4 h-4 lg:w-5 lg:h-5 inline-flex items-center justify-center shrink-0" style="color:${s.color || '#E57354'}">${s.svg}</span>` : '')
+                        label: s.name
                     }))
                     : [];
 
                 let shapeOptionsList = [
-                    { val: '', label: '-- Pilih Bangun Datar --', icon: '' },
+                    { val: '', label: '-- Pilih Bangun Datar --' },
                     ...shapes
                 ];
 
                 if (row.shape && !shapeOptionsList.some(s => s.val === row.shape)) {
                     shapeOptionsList.push({
                         val: row.shape,
-                        label: getShapeDisplayText(row.shape),
-                        icon: GEOMETRY_SHAPES[row.shape]?.svg || ''
+                        label: getShapeDisplayText(row.shape)
                     });
                 }
 
@@ -3257,8 +3206,7 @@
                         <button type="button"
                                 data-shape="${s.val}"
                                 onclick="selectShapeItem(event, ${i}, '${s.val.replace(/'/g, "\\'")}')"
-                                class="w-full text-left px-3 py-2 flex items-center gap-2.5 hover:bg-[#FFF2D6] transition-colors cursor-pointer ${row.shape === s.val ? 'bg-[#FFEBE6] font-bold text-[#E57354]' : 'text-[#5C2B09]'}">
-                            ${s.icon || ''}
+                                class="w-full text-left px-3 py-2 flex items-center hover:bg-[#FFF2D6] transition-colors cursor-pointer ${row.shape === s.val ? 'bg-[#FFEBE6] font-bold text-[#E57354]' : 'text-[#5C2B09]'}">
                             <span class="leading-snug">${s.label}</span>
                         </button>
                     `).join('');
@@ -3283,7 +3231,7 @@
                                             id="shapeSelectBtn-${i}"
                                             onclick="toggleShapeDropdown(event, ${i})"
                                             class="w-full h-10 lg:h-11 flex items-center justify-between gap-1.5 bg-white border border-[#E9C37A] rounded-lg px-2.5 py-1.5 text-[11px] sm:text-xs lg:text-sm font-bold text-[#8A4416] outline-none cursor-pointer hover:bg-[#FFF8E7] focus:border-[#E57354] shadow-2xs transition-colors text-left">
-                                        <span id="shapeLabel-${i}" class="truncate flex items-center gap-1.5 min-w-0">${selectedShapeObj.icon || ''}<span class="truncate">${selectedShapeObj.label}</span></span>
+                                        <span id="shapeLabel-${i}" class="truncate min-w-0">${selectedShapeObj.label}</span>
                                         <svg id="shapeArrow-${i}" class="w-4 h-4 text-[#8A4416] shrink-0 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
                                         </svg>
@@ -3672,17 +3620,15 @@
                 state.peerId = '';
                 state.name = '';
                 state.noAbsen = '-';
-                state.isManual = false;
                 state.manualSkipped = true;
             } else {
                 const targetId = String(peerUserId);
                 const selectedPeer = (roomMembersList || []).find(m => m && String(m.user_id) === targetId);
                 if (selectedPeer) {
                     const prevPeerId = state.peerId;
-                    const prevIsManual = state.isManual;
-                    const duplicateIdx = evalRowStates.findIndex((s, rIdx) => rIdx !== idx && !s.isManual && String(s.peerId) === targetId);
+                    const duplicateIdx = evalRowStates.findIndex((s, rIdx) => rIdx !== idx && String(s.peerId) === targetId);
                     if (duplicateIdx !== -1) {
-                        const prevPeerObj = prevPeerId && !prevIsManual
+                        const prevPeerObj = prevPeerId
                             ? (roomMembersList || []).find(m => m && String(m.user_id) === String(prevPeerId))
                             : null;
                         if (prevPeerObj) {
@@ -3701,7 +3647,6 @@
                     state.peerId = targetId;
                     state.name = selectedPeer.user_name;
                     state.noAbsen = selectedPeer.no_absen || '-';
-                    state.isManual = false;
                     state.manualSkipped = false;
                 }
             }
@@ -3711,37 +3656,6 @@
             if (window.globalAudio && typeof window.globalAudio.playSfx === 'function') {
                 window.globalAudio.playSfx('button_click');
             }
-        }
-
-        function enableEvalManualMode(event, idx) {
-            if (event) event.stopPropagation();
-            captureEvalDomState();
-            closeAllEvalPeerDropdowns();
-            if (evalRowStates[idx]) {
-                evalRowStates[idx].peerId = '';
-                evalRowStates[idx].isManual = true;
-                evalRowStates[idx].manualSkipped = true;
-                if (!evalRowStates[idx].noAbsen || evalRowStates[idx].noAbsen === '-') {
-                    evalRowStates[idx].noAbsen = '';
-                }
-            }
-            renderTable3Evaluations(roomMembersList, [], false);
-            const nameInput = document.getElementById(`evalName-${idx}`);
-            if (nameInput) nameInput.focus();
-        }
-
-        function enableEvalDropdownMode(idx) {
-            captureEvalDomState();
-            closeAllEvalPeerDropdowns();
-            if (evalRowStates[idx]) {
-                evalRowStates[idx].isManual = false;
-                evalRowStates[idx].manualSkipped = false;
-                evalRowStates[idx].peerId = '';
-                evalRowStates[idx].name = '';
-                evalRowStates[idx].noAbsen = '-';
-            }
-            renderTable3Evaluations(roomMembersList, [], false);
-            autoSaveRoomData();
         }
 
         function selectEvalRating(event, idx, ratingVal) {
