@@ -47,7 +47,8 @@ class BangunDatarTest extends TestCase
         $response->assertSee('TARA (Lentera Eksplorasi Bangun Datar)');
         $response->assertSee('Selamat bereksplorasi teman-teman!');
         $response->assertSee('Pada materi ini murid dapat mendeskripsikan ciri-ciri berbagai bentuk bangun datar segi banyak dan bukan segi banyak.');
-        $response->assertSee('Murid dapat mengelompokkan (C4)');
+        $response->assertSee('Murid dapat menerapkan (C3) ciri-ciri bentuk bangun datar (segi banyak dan bukan segi banyak) berdasarkan karakteristiknya pada motif damar kurung dengan baik.');
+        $response->assertSee('Murid dapat menguraikan (C4) jenis dan ciri-ciri bangun datar penyusun motif damar kurung dengan tepat.');
         $response->assertSee('Cek Hasil:');
     }
 

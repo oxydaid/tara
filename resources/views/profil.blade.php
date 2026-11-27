@@ -211,8 +211,8 @@
                                             <h3 class="font-bold text-[#8A4416] text-xs sm:text-sm md:text-base">Tujuan Pembelajaran (TP)</h3>
                                         </div>
                                         <ol class="list-decimal pl-5 space-y-1.5 text-xs sm:text-sm md:text-base">
-                                            <li>Murid dapat menerapkan (C3) ciri-ciri berbagai bentuk bangun datar berdasarkan karakteristiknya pada motif Damar Kurung dengan benar.</li>
-                                            <li>Murid dapat mengelompokkan (C4) bentuk bangun datar pada motif Damar Kurung ke dalam segi banyak dan bukan segi banyak berdasarkan karakteristik sisi dan sudutnya dengan tepat.</li>
+                                            <li>Murid dapat menerapkan (C3) ciri-ciri bentuk bangun datar (segi banyak dan bukan segi banyak) berdasarkan karakteristiknya pada motif damar kurung dengan baik.</li>
+                                            <li>Murid dapat menguraikan (C4) jenis dan ciri-ciri bangun datar penyusun motif damar kurung dengan tepat.</li>
                                         </ol>
                                     </div>
                                 </div>
